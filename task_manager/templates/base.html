@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet"> -->
 
     <!-- Custom styles for this template -->
     <style>
@@ -65,12 +65,14 @@
     </nav>
 
     <main role="main" class="container">
+    {% block main%}
 
       <div class="starter-template">
         <h1>{% translate 'Bootstrap starter template' %}</h1>
         <p class="lead">{% translate 'Use this document as a way to quickly start any new project.' %}<br> {% translate 'All you get is this text and a mostly barebones HTML document.' %}</p>
       </div>
 
+    {% endblock %}
     </main>
 
   </body>
