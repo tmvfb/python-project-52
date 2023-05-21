@@ -19,6 +19,7 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, ".env"))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_manager.settings')
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap4'
+    'bootstrap4',
+    'task_manager',
+    'task_manager.users'
 ]
 
 MIDDLEWARE = [
@@ -82,18 +85,22 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-DATABASES['default'] = dj_database_url.config(
-    default=os.getenv('DATABASE'),
-    conn_max_age=600,
-    conn_health_checks=True,
-    test_options={'NAME': 'mytestdatabase'}
-)
+if os.getenv('DATABASE_URL'):
+    db = dj_database_url.config(
+        default=os.getenv('DATABASE'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        test_options={'NAME': 'mytestdatabase'}
+    )
+
+    DATABASES['test'] = DATABASES['default'].copy()
+    DATABASES['default'].update(db)
 
 
 # Password validation
@@ -131,6 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
