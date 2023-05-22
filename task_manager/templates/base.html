@@ -4,6 +4,7 @@
 {% load static %}
 {% load bootstrap4 %}
 {% bootstrap_css %}
+{% bootstrap_javascript %}
 
 <html lang="en">
   <head>
@@ -38,7 +39,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users' %}">{% translate 'Users' %}</a>
           </li>
@@ -67,31 +68,38 @@
       </div>
     </nav>
 
-    {% if messages %}
-    <ul class="messages col-12">
-      {% for message in messages %}
-        {% if 'warning' in message.tags %}
-          <div class="alert alert-danger">
-            {{ message }}
-          </div>
-        {% elif 'success' in message.tags %}
-          <div class="alert alert-success">
-            {{ message }}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    {% endif %}
-
     <main role="main" class="container">
-    {% block main%}
 
-      <div class="starter-template">
-        <h1>{% translate 'Bootstrap starter template' %}</h1>
-        <p class="lead">{% translate 'Use this document as a way to quickly start any new project.' %}<br> {% translate 'All you get is this text and a mostly barebones HTML document.' %}</p>
-      </div>
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          {% if 'warning' in message.tags %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif 'success' in message.tags %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
 
-    {% endblock %}
+      {% block main%}
+
+        <div class="starter-template">
+          <h1>{% translate 'Bootstrap starter template' %}</h1>
+          <p class="lead">{% translate 'Use this document as a way to quickly start any new project.' %}<br> {% translate 'All you get is this text and a mostly barebones HTML document.' %}</p>
+        </div>
+
+      {% endblock %}
     </main>
 
   </body>

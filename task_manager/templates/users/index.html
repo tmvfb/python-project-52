@@ -21,7 +21,16 @@
             <td class="align-middle">{{ user.username}}</td>
             <td class="align-middle">{{ user.first_name }}{{ user.last_name }}</td>
             <td class="align-middle">{{ user.date_joined }}</td>
-            <td class="align-middle"><a href="{% url 'user_update' user.id %}">{% translate 'Update' %}</a><br><a href="{% url 'user_delete' user.id %}">{% translate 'Delete' %}</a></td>
+            <td class="align-middle">
+              <form action="{% url 'user_update' id=user.id %}" method="get" rel="nofollow">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
+              </form>
+              <form action="{% url 'user_delete' id=user.id %}" method="get" rel="nofollow">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
+              </form>
+            <!-- <a href="{% url 'user_delete' user.id %}">{% translate 'Delete' %}</a></td> -->
           </tr>
         {% endfor %}
       </table>

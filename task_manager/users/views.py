@@ -10,7 +10,7 @@ from django.http import HttpResponse
 # Create your views here.
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        users = User.objects.all()
+        users = User.objects.filter(is_superuser=False)
         print(users)
         return render(request, "users/index.html", {"users": users})
 
@@ -26,13 +26,12 @@ class UserCreateView(View):
             form.save()
             messages.success(request, _("User created successfully!"))
             return redirect("users")
+
         messages.warning(request, _(
             "Something went wrong. Please check the entered data"
         ))
         return render(
-            request,
-            "users/create.html",
-            {
+            request, "users/create.html", context={
                 "form": form,
             },
         )
@@ -40,18 +39,55 @@ class UserCreateView(View):
 
 class UserUpdateView(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+        user_id = kwargs.get('id')
+        user = User.objects.get(id=user_id)
+        form = RegistrationForm(instance=user)
+        return render(request, "users/update.html", {
+            "form": form,
+            "user_id": user_id
+        })
 
     def post(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+        user_id = kwargs.get('id')
+        user = User.objects.get(id=user_id)
+        form = RegistrationForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("User updated successfully!"))
+            return redirect("users")
+
+        messages.warning(request, _(
+            "Something went wrong. Please check the entered data"
+        ))
+        return render(
+            request, "users/update.html", context={
+                "form": form,
+                "user_id": user_id
+            },
+        )
 
 
 class UserDeleteView(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+        user_id = kwargs.get('id')
+        user = User.objects.get(id=user_id)
+        return render(request, "users/delete.html", context={
+            "user": user
+        })
 
     def post(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+        user_id = kwargs.get('id')
+        user = User.objects.get(id=user_id)
+        if user:
+            user.delete()
+            messages.success(request, _(
+                "User deleted successfully"
+            ))
+        else:
+            messages.warning(request, _(
+                "How did you get here? This user does not exist."
+            ))
+        return redirect('users')
 
 
 class UserLoginView(View):
