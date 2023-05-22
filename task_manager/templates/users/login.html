@@ -1,1 +1,3 @@
-{% extends "base.html" %}
+{% url 'user_login' as new_url %}
+{% include "users/create.html" with url_=new_url button="Login" w1="col-5" w2="col-5" w3="col-3 ml-4" %}
+

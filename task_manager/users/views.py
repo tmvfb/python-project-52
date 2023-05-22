@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 from django.utils.translation import gettext as _
 from django.http import HttpResponse
+from django.contrib.auth import authenticate
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 # Create your views here.
@@ -90,14 +92,24 @@ class UserDeleteView(View):
         return redirect('users')
 
 
-class UserLoginView(View):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+class UserLoginView(LoginView):
+    template_name = "users/login.html"
+    authentication_form = LoginForm
+    # def get(self, request, *args, **kwargs):
+    #     form = (request)
+    #     return render(request, "users/login.html", {"form": form})
+    #
+    # def post(self, request, *args, **kwargs):
+    #     username = request.POST.get('username')
+    #     password = request.POST.get('password')
+    #     user = authenticate(username=username, password=password)
+    #     if user is not None:
+    #         messages.success(request, _("User logged in successfully!"))
+    #         return redirect("users")
+    #     else:
+    #         messages.warning(request, _("Login data is incorrect"))
+    #         return redirect("users")
 
-    def post(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
 
-
-class UserLogoutView(View):
-    def post(self, request, *args, **kwargs):
-        return HttpResponse('Not yet implemented!')
+class UserLogoutView(LogoutView):
+    pass
