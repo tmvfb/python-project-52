@@ -43,32 +43,38 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users' %}">{% translate 'Users' %}</a>
           </li>
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users' %}">{% translate 'Statuses' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users' %}">{% translate 'Labels' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'users' %}">{% translate 'Tasks' %}</a>
-            </li>
-          {% endif %}
+      {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users' %}">{% translate 'Statuses' %}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users' %}">{% translate 'Labels' %}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users' %}">{% translate 'Tasks' %}</a>
+          </li>
+      {% endif %}
         </ul>
+      {% if request.user.is_authenticated %}
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="{% translate 'Search' %}" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% translate 'Search' %}</button>
         </form>
+      {% endif %}
         <ul class="navbar-nav mr-0 ml-4">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'user_login' %}">{% translate 'Login' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'user_create' %}">{% translate 'Register' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'user_logout' %}">{% translate 'Logout' %}</a>
-          </li>
+      {% if not request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_login' %}">{% translate 'Login' %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_create' %}">{% translate 'Register' %}</a>
+            </li>
+      {% endif %}
+      {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_logout' %}">{% translate 'Logout' %}</a>
+            </li>
+      {% endif %}
         </ul>
       </div>
     </nav>
@@ -76,17 +82,17 @@
     <main role="main" class="container">
 
       {% if messages %}
-      <ul class="messages">
+      <ul class="messages row">
         {% for message in messages %}
           {% if 'warning' in message.tags %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show col-12" role="alert">
               {{ message }}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           {% elif 'success' in message.tags %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show col-12" role="alert">
               {{ message }}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -109,4 +115,3 @@
 
   </body>
 </html>
-
