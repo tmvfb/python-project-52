@@ -1,52 +1,75 @@
-from django.shortcuts import render, redirect
-from django.views import View
+from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, LoginForm
 from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 
 # Create your views here.
-class IndexView(View):
-    def get(self, request, *args, **kwargs):
-        users = User.objects.filter(is_superuser=False)
-        return render(request, "users/index.html", {"users": users})
+
+class CheckUserMixin(UserPassesTestMixin):
+    '''
+    Checks if authenticated user tries to update or delete other user's profile.
+    '''
+    error_message = None
+    redirect_url = reverse_lazy('users')
+
+    def handle_no_permission(self):
+        return redirect(self.redirect_url)
+
+    def test_func(self):
+        user_id = self.kwargs.get('id')
+        user = get_object_or_404(User, id=user_id)
+        if self.request.user != user:
+            messages.warning(self.request, _(self.error_message))
+            return False
+        return True
 
 
-class UserCreateView(UserPassesTestMixin, View):
+class IndexView(ListView):
+
+    model = User
+    paginate_by = 10
+    template_name = 'users/index.html'
+
+    def get_queryset(self):
+        return User.objects.filter(is_superuser=False)
+
+
+class UserCreateView(UserPassesTestMixin, CreateView):
+
+    form_class = RegistrationForm
+    template_name = "users/create.html"
+    success_url = reverse_lazy("user_login")
 
     def test_func(self):  # authenticated users can't register
         return not self.request.user.is_authenticated
 
-    def get(self, request, *args, **kwargs):
-        form = RegistrationForm()
-        return render(request, "users/create.html", {"form": form})
+    def form_valid(self, form):
+        messages.success(self.request, _("User created successfully!"))
+        return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("User created successfully!"))
-            return redirect("user_login")
-
-        messages.warning(request, _(
+    def form_invalid(self, form):
+        messages.warning(self.request, _(
             "Something went wrong. Please check the entered data"
         ))
-        return render(
-            request, "users/create.html", context={
-                "form": form,
-            },
-        )
+        return super().form_invalid(form)
 
 
-class UserUpdateView(LoginRequiredMixin, View):
+class UserUpdateView(LoginRequiredMixin, CheckUserMixin, UpdateView):
 
+    form_class = RegistrationForm
+    model = User
+    template_name = "users/update.html"
+    success_url = reverse_lazy("users")
     login_url = reverse_lazy('user_login')
+    error_message = "Sorry, you don't have permissions to update other users' data"  # noqa: E501
+    pk_url_kwarg = 'id'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -56,45 +79,24 @@ class UserUpdateView(LoginRequiredMixin, View):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('id')
-        user = get_object_or_404(User, id=user_id)
-        form = RegistrationForm(instance=user)
-        if user == request.user:
-            return render(request, "users/update.html", {
-                "form": form,
-                "user_id": user_id
-            })
-        messages.warning(request, _(
-            "Sorry, you don't have permissions to update other users' data"
-        ))
-        return redirect('users')
+    def form_valid(self, form):
+        messages.success(self.request, _("User updated successfully!"))
+        return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        user_id = kwargs.get('id')
-        user = get_object_or_404(User, id=user_id)
-        form = RegistrationForm(request.POST, instance=user)
-        if form.is_valid() and user == request.user:
-            form.save()
-            messages.success(request, _("User updated successfully!"))
-            return redirect("users")
-
-        messages.warning(request, _(
+    def form_invalid(self, form):
+        messages.warning(self.request, _(
             "Something went wrong. Please check the entered data"
         ))
-        return render(
-            request, "users/update.html", context={
-                "form": form,
-                "user_id": user_id
-            },
-        )
+        return super().form_invalid(form)
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
+
     model = User
     success_url = reverse_lazy('users')
     template_name = 'users/delete.html'
     login_url = reverse_lazy('user_login')
+    error_message = "Sorry, you don't have permissions to delete other users' data"  # noqa: E501
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -104,27 +106,9 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, id=kwargs.get('id'))
-        if user == request.user:
-            return super().get(request, *args, **kwargs)
-        else:
-            messages.warning(request, _(
-                "Sorry, you don't have permissions to delete other users' data"
-            ))
-            return redirect('users')
-
-    def post(self, request, *args, **kwargs):
-        user = get_object_or_404(User, id=kwargs.get('id'))
-        if user == request.user:
-            user.delete()
-            messages.success(request, _("User deleted successfully"))
-        else:
-            messages.warning(request, _("How did you get here?"))
-        return redirect('users')
-
 
 class UserLoginView(UserPassesTestMixin, LoginView):
+
     template_name = "users/login.html"
     authentication_form = LoginForm
 
@@ -139,6 +123,145 @@ class UserLoginView(UserPassesTestMixin, LoginView):
         messages.warning(self.request, _("Login data is incorrect"))
         return super().form_invalid(form)
 
+
+class UserLogoutView(UserPassesTestMixin, LogoutView):
+
+    def test_func(self):  # not authenticated users can't logout
+        return self.request.user.is_authenticated
+
+
+# alternative "hard-coded" functions:
+
+# class IndexView(ListView):
+#     model = User
+#     paginate_by = 10
+#     template_name = 'users/index.html'
+#
+#     def get(self, request, *args, **kwargs):
+    #     users = User.objects.filter(is_superuser=False)
+    #     return render(request, "users/index.html", {"users": users})
+
+
+# class UserCreateView(UserPassesTestMixin, CreateView):
+#
+#     form_class = RegistrationForm
+#     template_name = "users/create.html"
+#     success_url = reverse_lazy("user_login")
+#
+#     def test_func(self):  # authenticated users can't register
+#         return not self.request.user.is_authenticated
+#
+    # def get(self, request, *args, **kwargs):
+    #     form = RegistrationForm()
+    #     return render(request, "users/create.html", {"form": form})
+
+    # def post(self, request, *args, **kwargs):
+    #     form = RegistrationForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         messages.success(request, _("User created successfully!"))
+    #         return redirect("user_login")
+    #
+    #     messages.warning(request, _(
+    #         "Something went wrong. Please check the entered data"
+    #     ))
+    #     return render(
+    #         request, "users/create.html", context={
+    #             "form": form,
+    #         },
+    #     )
+
+
+# class UserUpdateView(LoginRequiredMixin, UpdateView):
+#
+#     form_class = RegistrationForm
+#     model = User
+#     template_name = "users/update.html"
+#     success_url = reverse_lazy("users")
+#     login_url = reverse_lazy('user_login')
+#     error_message = "Sorry, you don't have permissions to update other users' data"  # noqa: E501
+#     pk_url_kwarg = 'id'
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             messages.warning(request, _(
+#                 "You must login to be able to update your profile"
+#             ))
+#             return self.handle_no_permission()
+#         return super().dispatch(request, *args, **kwargs)
+
+    # def get(self, request, *args, **kwargs):
+    #     user_id = kwargs.get('id')
+    #     user = get_object_or_404(User, id=user_id)
+    #     form = RegistrationForm(instance=user)
+    #     return render(request, "users/update.html", {
+    #         "form": form,
+    #         "user_id": user_id
+    #     })
+    #
+    # def post(self, request, *args, **kwargs):
+    #     user_id = kwargs.get('id')
+    #     user = get_object_or_404(User, id=user_id)
+    #     form = RegistrationForm(request.POST, instance=user)
+    #     if form.is_valid():
+    #         form.save()
+    #         messages.success(request, _("User updated successfully!"))
+    #         return redirect("users")
+    #
+    #     messages.warning(request, _(
+    #         "Something went wrong. Please check the entered data"
+    #     ))
+    #     return render(
+    #         request, "users/update.html", context={
+    #             "form": form,
+    #             "user_id": user_id
+    #         },
+    #     )
+
+
+# class UserDeleteView(LoginRequiredMixin, DeleteView):
+#
+#     model = User
+#     success_url = reverse_lazy('users')
+#     template_name = 'users/delete.html'
+#     login_url = reverse_lazy('user_login')
+#     error_message = "Sorry, you don't have permissions to delete other users' data"  # noqa: E501
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             messages.warning(request, _(
+#                 "You must login to be able to delete your profile"
+#             ))
+#             return self.handle_no_permission()
+#         return super().dispatch(request, *args, **kwargs)
+
+    # def get(self, request, *args, **kwargs):
+    #     user = get_object_or_404(User, id=kwargs.get('id'))
+    #     if user == request.user:
+    #         return super().get(request, *args, **kwargs)
+    #     else:
+    #         messages.warning(request, _(
+    #             "Sorry, you don't have permissions to delete other users' data"  # noqa: E501
+    #         ))
+    #         return redirect('users')
+    #
+    # def post(self, request, *args, **kwargs):
+    #     user = get_object_or_404(User, id=kwargs.get('id'))
+    #     if user == request.user:
+    #         user.delete()
+    #         messages.success(request, _("User deleted successfully"))
+    #     else:
+    #         messages.warning(request, _("How did you get here?"))
+    #     return redirect('users')
+
+
+# class UserLoginView(UserPassesTestMixin, LoginView):
+#     template_name = "users/login.html"
+#     authentication_form = LoginForm
+#
+#     def test_func(self):  # authenticated users can't login
+#         return not self.request.user.is_authenticated
+#
     # def get(self, request, *args, **kwargs):
     #     form = (request)
     #     return render(request, "users/login.html", {"form": form})
@@ -153,9 +276,3 @@ class UserLoginView(UserPassesTestMixin, LoginView):
     #     else:
     #         messages.warning(request, _("Login data is incorrect"))
     #         return redirect("users")
-
-
-class UserLogoutView(UserPassesTestMixin, LogoutView):
-
-    def test_func(self):  # not authenticated users can't logout
-        return self.request.user.is_authenticated

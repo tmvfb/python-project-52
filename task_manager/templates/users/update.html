@@ -1,2 +1,2 @@
-{% url 'user_update' id=user_id as new_url %}
+{% url 'user_update' id=request.user.id as new_url %}
 {% include "users/create.html" with url_=new_url button="Update" %}

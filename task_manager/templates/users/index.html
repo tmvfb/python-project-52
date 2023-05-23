@@ -15,7 +15,7 @@
             <th>{% translate 'Actions' %}</th>
           </tr>
         </thead>
-        {% for user in users %}
+        {% for user in object_list %}
           <tr>
             <td class="align-middle">{{ user.id }}</td>
             <td class="align-middle">{{ user.username}}</td>
