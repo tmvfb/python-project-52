@@ -88,6 +88,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'TEST': {
+            'NAME': BASE_DIR / 'test_db.sqlite3'
+        }
     }
 }
 
@@ -96,10 +99,9 @@ if os.getenv('DATABASE_URL'):
         default=os.getenv('DATABASE'),
         conn_max_age=600,
         conn_health_checks=True,
-        test_options={'NAME': 'mytestdatabase'}
+        test_options={'NAME': BASE_DIR / 'db.sqlite3'}
     )
 
-    DATABASES['test'] = DATABASES['default'].copy()
     DATABASES['default'].update(db)
 
 
@@ -155,3 +157,5 @@ BOOTSTRAP4 = {
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+CSRF_TRUSTED_ORIGINS = ['https://python-project-52-production-ae52.up.railway.app']

@@ -38,7 +38,7 @@ class IndexView(ListView):
     template_name = 'users/index.html'
 
     def get_queryset(self):
-        return User.objects.filter(is_superuser=False)
+        return User.objects.filter(is_superuser=False).order_by('pk')
 
 
 class UserCreateView(UserPassesTestMixin, CreateView):
@@ -97,6 +97,7 @@ class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
     template_name = 'users/delete.html'
     login_url = reverse_lazy('user_login')
     error_message = "Sorry, you don't have permissions to delete other users' data"  # noqa: E501
+    pk_url_kwarg = 'id'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -105,6 +106,10 @@ class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
             ))
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, _('User deleted successfully!'))
+        return super().form_valid(form)
 
 
 class UserLoginView(UserPassesTestMixin, LoginView):
@@ -116,7 +121,7 @@ class UserLoginView(UserPassesTestMixin, LoginView):
         return not self.request.user.is_authenticated
 
     def form_valid(self, form):
-        messages.success(self.request, _("User logged in successfully!"))
+        messages.success(self.request, _("Logged in successfully!"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
