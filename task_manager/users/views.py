@@ -55,6 +55,12 @@ class UserCreateView(UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        # adds bootstrap-js green checkmarks and red warning signs
+        for field in form:
+            if field.errors:
+                form.fields[field.name].widget.attrs['class'] += ' is-invalid'
+            else:
+                form.fields[field.name].widget.attrs['class'] += ' is-valid'
         messages.warning(self.request, _(
             "Something went wrong. Please check the entered data"
         ))
@@ -68,7 +74,7 @@ class UserUpdateView(LoginRequiredMixin, CheckUserMixin, UpdateView):
     template_name = "users/update.html"
     success_url = reverse_lazy("users")
     login_url = reverse_lazy('user_login')
-    error_message = "Sorry, you don't have permissions to update other users' data"  # noqa: E501
+    error_message = _("Sorry, you don't have permissions to update other users' data")  # noqa: E501
     pk_url_kwarg = 'id'
 
     def dispatch(self, request, *args, **kwargs):
@@ -96,7 +102,7 @@ class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
     success_url = reverse_lazy('users')
     template_name = 'users/delete.html'
     login_url = reverse_lazy('user_login')
-    error_message = "Sorry, you don't have permissions to delete other users' data"  # noqa: E501
+    error_message = _("Sorry, you don't have permissions to delete other users' data")  # noqa: E501
     pk_url_kwarg = 'id'
 
     def dispatch(self, request, *args, **kwargs):
@@ -125,6 +131,11 @@ class UserLoginView(UserPassesTestMixin, LoginView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        for field in form:
+            if field.errors:
+                form.fields[field.name].widget.attrs['class'] += ' is-invalid'
+            else:
+                form.fields[field.name].widget.attrs['class'] += ' is-valid'
         messages.warning(self.request, _("Login data is incorrect"))
         return super().form_invalid(form)
 

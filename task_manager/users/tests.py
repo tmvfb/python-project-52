@@ -44,10 +44,11 @@ class UserTest(TestCase):
         response = self.client.get(reverse('user_create'))
         self.assertEqual(response.status_code, 200)
 
-    def test_user_create_post_correct(self):
+    def test_user_create_post_correct_code(self):
         response = self.client.post(reverse('user_create'), data=self.user)
         self.assertEqual(response.status_code, 302)
 
+    def test_user_create_post_correct_content(self):
         response = self.client.post(reverse('user_create'), data=self.user, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('User created successfully!'))
