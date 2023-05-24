@@ -18,9 +18,12 @@ class RegistrationForm(UserCreationForm):
             'placeholder': _('Last name')
         })
         self.fields['username'].widget.attrs.update({
+            'maxlength': '50',
             'class': 'form-control',
             'placeholder': _('Username')
         })
+        self.fields['username'].help_text =\
+            'Required. 50 characters or fewer. Letters, digits and @/./+/-/_ only.'  # noqa: E501
         self.fields['password1'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': _('Password')
