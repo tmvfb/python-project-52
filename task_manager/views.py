@@ -5,5 +5,5 @@ from django.shortcuts import render
 
 class HomePageView(TemplateView):
 
-    def get(self, request, **kwargs):
+    def get(self, request, *args, **kwargs):
         return render(request, 'base.html')

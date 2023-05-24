@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main %}
+<div class="container wrapper flex-grow-1">
+  <h1 class="my-4">
+    {% translate 'Delete status' %}
+  </h1>
+  <p>{% translate 'Are you sure you want to delete status' %}<span style="font-weight:bold"> {{ status.name }}</span>?</p>
+  <form action="{% url 'status_delete' id=status.id %}" method="post" rel="nofollow">
+    {% csrf_token %}
+    <input class="btn btn-danger mt-2" type="submit" value="{% translate 'Yes, delete status' %}">
+  </form>
+</div>
+{% endblock %}

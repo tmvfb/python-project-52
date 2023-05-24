@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main %}
+
+  <div>
+    <div class="row justify-content-center">
+      <div class="col-12 text-left mb-3">
+        <form action="{% url 'status_create' %}" method="get">
+          <input class="btn btn-outline-info btn-sm col-auto text-uppercase" type="submit" value="{% translate button|default:'Create status' %}">
+        </form>
+      </div>
+      <table class="table table-hover mx-1 table-responsive-sm">
+        <thead>
+          <tr>
+            <th>{% translate 'ID' %}</th>
+            <th>{% translate 'Status name' %}</th>
+            <th>{% translate 'Creation date' %}</th>
+            <th>{% translate 'Actions' %}</th>
+          </tr>
+        </thead>
+        {% for status in object_list %}
+          <tr>
+            <td class="align-middle">{{ status.id }}</td>
+            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ status.name }}</td>
+            <td class="align-middle">{{ status.created_at }}</td>
+            <td class="align-middle">
+              <form action="{% url 'status_update' id=status.id %}" method="get" rel="nofollow">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
+              </form>
+              <form action="{% url 'status_delete' id=status.id %}" method="get" rel="nofollow">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}
