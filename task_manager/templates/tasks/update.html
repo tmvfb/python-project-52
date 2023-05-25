@@ -1,0 +1,2 @@
+{% url 'task_update' id=task.id as new_url %}
+{% include "tasks/create.html" with url_=new_url button="Update" %}

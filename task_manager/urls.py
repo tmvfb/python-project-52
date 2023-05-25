@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('users/', include('task_manager.users.urls')),
     path('statuses/', include('task_manager.statuses.urls')),
+    path('tasks/', include('task_manager.tasks.urls')),
     path('admin/', admin.site.urls),
 ]

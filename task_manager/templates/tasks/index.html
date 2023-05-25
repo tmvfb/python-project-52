@@ -4,33 +4,37 @@
 {% block main %}
 
   <div>
-    <h1 class="text-left mb-4">{% translate 'Users' %}</h1>
+    <h1 class="text-left mb-4">{% translate 'Tasks' %}</h1>
     <div class="row justify-content-center">
+      <div class="col-12 text-left mb-3">
+        <form action="{% url 'task_create' %}" method="get">
+          <input class="btn btn-outline-info btn-sm col-auto text-uppercase" type="submit" value="{% translate button|default:'Create task' %}">
+        </form>
+      </div>
       <table class="table table-hover mx-1 table-responsive-sm">
         <thead>
           <tr>
             <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Username' %}</th>
-            <th>{% translate 'Full name' %} </th>
+            <th>{% translate 'Task name' %}</th>
             <th>{% translate 'Creation date' %}</th>
             <th>{% translate 'Actions' %}</th>
           </tr>
         </thead>
-        {% for user in object_list %}
+        {% for task in object_list %}
           <tr>
-            <td class="align-middle">{{ user.id }}</td>
-            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ user.username}}</td>
-            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ user.first_name }} {{ user.last_name }}</td>
-            <td class="align-middle">{{ user.date_joined }}</td>
+            <td class="align-middle">{{ task.id }}</td>
+            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ task.name }}</td>
+            <td class="align-middle">{{ task.created_at }}</td>
             <td class="align-middle">
-              <form action="{% url 'user_update' id=user.id %}" method="get" rel="nofollow">
+              <form action="{% url 'task_update' id=task.id %}" method="get" rel="nofollow">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
               </form>
-              <form action="{% url 'user_delete' id=user.id %}" method="get" rel="nofollow">
+              <form action="{% url 'task_delete' id=task.id %}" method="get" rel="nofollow">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
               </form>
+            </td>
           </tr>
         {% endfor %}
       </table>
