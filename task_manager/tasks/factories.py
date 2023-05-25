@@ -15,7 +15,7 @@ class TaskFactory(DjangoModelFactory):
     name = factory.Faker('word')
     description = factory.Faker('word')
     status = None
-    assigned_to = None
+    executor = None
     assigned_by = None
 
     @classmethod
@@ -25,6 +25,6 @@ class TaskFactory(DjangoModelFactory):
             'name': user.name,
             'description': user.description,
             'status': kwargs['status'],
-            'assigned_to': kwargs['assigned_to'],
+            'executor': kwargs['executor'],
             'assigned_by': kwargs['assigned_by'],
         }

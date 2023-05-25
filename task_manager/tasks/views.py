@@ -1,5 +1,5 @@
 from .models import Task
-from .forms import TaskForm
+from .forms import TaskForm, FilterForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,7 +17,26 @@ class IndexView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('user_login')
 
     def get_queryset(self):
-        return Task.objects.all().order_by('id')
+        filters = {
+            'status': self.request.GET.get('status'),
+            'executor': self.request.GET.get('executor'),
+            'mine': self.request.GET.get('mine')
+        }
+        tasks = Task.objects.all().order_by('id')
+
+        for var_name, filter in filters.items():  # filtering by several fields
+            if var_name == 'mine' and filter:
+                tasks = tasks.filter(executor=self.request.user.id)
+            elif filter:
+                kwargs = {var_name: filter}
+                tasks = tasks.filter(**kwargs)
+
+        return tasks
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = FilterForm()
+        return context
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

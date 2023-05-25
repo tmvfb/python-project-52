@@ -1,5 +1,6 @@
 from .models import Task
-from django.forms import ModelForm, TextInput, Textarea, Select
+from django import forms
+from django.forms import ModelForm, TextInput, Textarea, Select, CheckboxInput
 from django.utils.translation import gettext_lazy as _
 
 
@@ -11,7 +12,7 @@ class TaskForm(ModelForm):
             'name',
             'description',
             'status',
-            'assigned_to'
+            'executor'
         ]
         widgets = {
             'name': TextInput(attrs={
@@ -26,8 +27,35 @@ class TaskForm(ModelForm):
                 'class': 'form-control form-select',
                 'placeholder': _('Status'),
             }),
-            'assigned_to': Select(attrs={
+            'executor': Select(attrs={
                 'class': 'form-control form-select',
                 'placeholder': _('Assignee'),
+            })
+        }
+
+
+class FilterForm(ModelForm):
+
+    mine = forms.BooleanField(label=_('Is mine'))
+
+    class Meta:
+        model = Task
+        fields = [
+            'status',
+            'executor',
+            'mine'
+        ]
+        widgets = {
+            'status': Select(attrs={
+                'class': 'form-control form-select',
+                'placeholder': _('Status'),
+            }),
+            'executor': Select(attrs={
+                'class': 'form-control form-select',
+                'placeholder': _('Assignee'),
+            }),
+            'mine': CheckboxInput(attrs={
+                'class': 'form-check-input',
+                'placeholder': _('Is my task'),
             })
         }
