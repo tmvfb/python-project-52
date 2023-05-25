@@ -1,8 +1,9 @@
+from django.shortcuts import redirect
 from .models import Task
 from .forms import TaskForm, FilterForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView, DetailView
 )
@@ -92,7 +93,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
+class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     model = Task
     success_url = reverse_lazy('tasks')
@@ -103,6 +104,19 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, _('Task deleted successfully!'))
         return super().form_valid(form)
+
+    def handle_no_permission(self):
+        return redirect('tasks')
+
+    def test_func(self):
+        user_id = self.request.user.id
+        creator_id = self.get_object().assigned_by.id
+        if user_id != creator_id:
+            messages.warning(
+                self.request, _('Only the creator of the task can delete it')
+            )
+            return False
+        return True
 
 
 class TaskShowView(LoginRequiredMixin, DetailView):
