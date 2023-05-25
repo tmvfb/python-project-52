@@ -3,10 +3,11 @@ from .forms import TaskForm, FilterForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
+from django.views.generic import (
+    DeleteView, CreateView, UpdateView, ListView, DetailView
+)
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
-# from django.shortcuts import get_object_or_404
 
 
 class IndexView(LoginRequiredMixin, ListView):
@@ -104,5 +105,9 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         return super().form_valid(form)
 
 
-class TaskShowView(DeleteView):
-    pass
+class TaskShowView(LoginRequiredMixin, DetailView):
+
+    model = Task
+    pk_url_kwarg = 'id'
+    template_name = 'tasks/show.html'
+    login_url = reverse_lazy('user_login')
