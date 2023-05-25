@@ -3,6 +3,14 @@
 
 {% block main %}
 
+  <style>
+    .wrapped-word {
+      word-wrap: break-word;
+      min-width: 100px;
+      max-width: 130px;
+    }
+  </style>
+
   <div>
     <h1 class="text-left mb-4">{% translate 'Tasks' %}</h1>
     <div class="row justify-content-center">
@@ -16,6 +24,9 @@
           <tr>
             <th>{% translate 'ID' %}</th>
             <th>{% translate 'Task name' %}</th>
+            <th>{% translate 'Status' %}</th>
+            <th>{% translate 'Creator' %}</th>
+            <th>{% translate 'Assignee' %}</th>
             <th>{% translate 'Creation date' %}</th>
             <th>{% translate 'Actions' %}</th>
           </tr>
@@ -23,7 +34,10 @@
         {% for task in object_list %}
           <tr>
             <td class="align-middle">{{ task.id }}</td>
-            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ task.name }}</td>
+            <td class="align-middle wrapped-word">{{ task.name }}</td>
+            <td class="align-middle wrapped-word">{{ task.status }}</td>
+            <td class="align-middle wrapped-word">{{ task.assigned_by }}</td>
+            <td class="align-middle wrapped-word">{{ task.assigned_to }}</td>
             <td class="align-middle">{{ task.created_at }}</td>
             <td class="align-middle">
               <form action="{% url 'task_update' id=task.id %}" method="get" rel="nofollow">

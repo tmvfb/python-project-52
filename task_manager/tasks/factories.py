@@ -13,3 +13,18 @@ class TaskFactory(DjangoModelFactory):
         model = Task
 
     name = factory.Faker('word')
+    description = factory.Faker('word')
+    status = None
+    assigned_to = None
+    assigned_by = None
+
+    @classmethod
+    def create_fake_task(cls, **kwargs):
+        user = cls.build()
+        return {
+            'name': user.name,
+            'description': user.description,
+            'status': kwargs['status'],
+            'assigned_to': kwargs['assigned_to'],
+            'assigned_by': kwargs['assigned_by'],
+        }
