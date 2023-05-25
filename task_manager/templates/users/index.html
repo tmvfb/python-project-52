@@ -3,6 +3,14 @@
 
 {% block main %}
 
+  <style>
+    .wrapped-word {
+      word-wrap: break-word;
+      min-width: 100px;
+      max-width: 130px;
+    }
+  </style>
+
   <div>
     <h1 class="text-left mb-4">{% translate 'Users' %}</h1>
     <div class="row justify-content-center">
@@ -19,8 +27,8 @@
         {% for user in object_list %}
           <tr>
             <td class="align-middle">{{ user.id }}</td>
-            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ user.username}}</td>
-            <td class="align-middle" style="word-wrap: break-word;min-width: 100px;max-width: 130px;">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="align-middle wrapped-word">{{ user.username}}</td>
+            <td class="align-middle wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="align-middle">{{ user.date_joined }}</td>
             <td class="align-middle">
               <form action="{% url 'user_update' id=user.id %}" method="get" rel="nofollow">
@@ -31,6 +39,7 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
               </form>
+            </td>
           </tr>
         {% endfor %}
       </table>

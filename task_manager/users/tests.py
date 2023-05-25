@@ -26,6 +26,8 @@ class UserTest(TestCase):
     def test_users_view(self):
         response = self.client.get(reverse('users'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('Delete'))
+        self.assertContains(response, _('Update'))
         for user in self.users:
             self.assertContains(response, user.first_name)
             self.assertContains(response, user.last_name)

@@ -30,6 +30,8 @@ class StatusTest(TestCase):
     def test_statuses_view(self):
         response = self.client.get(reverse('statuses'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('Delete'))
+        self.assertContains(response, _('Update'))
         for status in self.statuses:
             self.assertContains(response, status.name)
 
