@@ -42,14 +42,14 @@ class IndexView(ListView):
         return User.objects.filter(is_superuser=False).order_by('pk')
 
 
-class UserCreateView(UserPassesTestMixin, CreateView):
+class UserCreateView(CreateView):  # TODO
 
     form_class = RegistrationForm
     template_name = 'users/create.html'
     success_url = reverse_lazy('user_login')
 
-    def test_func(self):  # authenticated users can't register
-        return not self.request.user.is_authenticated
+    # def test_func(self):  # authenticated users can't register
+    #     return not self.request.user.is_authenticated
 
     def form_valid(self, form):
         messages.success(self.request, _('User created successfully!'))
@@ -91,6 +91,11 @@ class UserUpdateView(LoginRequiredMixin, CheckUserMixin, UpdateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        for field in form:
+            if field.errors:
+                form.fields[field.name].widget.attrs['class'] += ' is-invalid'
+            else:
+                form.fields[field.name].widget.attrs['class'] += ' is-valid'
         messages.warning(self.request, _(
             'Something went wrong. Please check the entered data'
         ))
@@ -124,13 +129,13 @@ class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
             return redirect('users')
 
 
-class UserLoginView(UserPassesTestMixin, LoginView):
+class UserLoginView(LoginView):  # TODO
 
     template_name = 'users/login.html'
     authentication_form = LoginForm
 
-    def test_func(self):  # authenticated users can't login
-        return not self.request.user.is_authenticated
+    # def test_func(self):  # authenticated users can't login
+    #     return not self.request.user.is_authenticated
 
     def form_valid(self, form):
         messages.success(self.request, _('Logged in successfully!'))
@@ -146,10 +151,10 @@ class UserLoginView(UserPassesTestMixin, LoginView):
         return super().form_invalid(form)
 
 
-class UserLogoutView(UserPassesTestMixin, LogoutView):
+class UserLogoutView(LogoutView):  # TODO
 
-    def test_func(self):  # not authenticated users can't logout
-        return self.request.user.is_authenticated
+    # def test_func(self):  # not authenticated users can't logout
+    #     return self.request.user.is_authenticated
 
     def dispatch(self, request, *args, **kwargs):
         messages.success(request, _('You are logged out'))
