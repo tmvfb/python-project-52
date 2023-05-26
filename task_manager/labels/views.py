@@ -3,7 +3,7 @@ from .models import Label
 from .forms import LabelForm
 from django.contrib import messages
 from django.db.models import ProtectedError
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 from django.urls import reverse_lazy
 # from django.shortcuts import get_object_or_404

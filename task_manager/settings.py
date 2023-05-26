@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
+import locale
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -131,13 +133,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LOCALE_URL = "locale/"
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+from django.utils.translation import gettext_lazy as _
+LANGUAGES = (
+    # ('en-us', _('English')),
+    ('ru', _('Russian')),
+)
 
 
 # Static files (CSS, JavaScript, Images)
@@ -159,10 +170,12 @@ BOOTSTRAP4 = {
 }
 
 
+LANGUAGE_CODE = 'ru'
+
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-CSRF_TRUSTED_ORIGINS = ['https://python-project-52-production-ae52.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://python-project-52-production-ae52.up.railway.app', 'https://github.com']
 
 ROLLBAR = {
     'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
@@ -170,3 +183,12 @@ ROLLBAR = {
     'code_version': '1.0',
     'root': BASE_DIR,
 }
+
+#
+#
+# import django
+# django.setup()
+#
+# from django.utils.translation import activate, get_language
+# activate('ru')
+# LANGUAGE_CODE = get_language()

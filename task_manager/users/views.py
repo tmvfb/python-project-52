@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, LoginForm
 from django.db.models import ProtectedError
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 from django.urls import reverse_lazy
@@ -150,6 +150,10 @@ class UserLogoutView(UserPassesTestMixin, LogoutView):
 
     def test_func(self):  # not authenticated users can't logout
         return self.request.user.is_authenticated
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, _('You are logged out'))
+        return super().dispatch(request, *args, **kwargs)
 
 
 # alternative 'hard-coded' functions:

@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView, DetailView
 )
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 class IndexView(LoginRequiredMixin, ListView):
