@@ -174,7 +174,7 @@ class TaskTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
-            _('Status is connected with one or more tasks and can not be deleted')
+            _('Status is connected with one or more tasks and cannot be deleted')
         )
 
     def test_user_delete_connected_with_task(self):
@@ -182,7 +182,7 @@ class TaskTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
-            _('User has tasks and can not be deleted')
+            _('User has tasks and cannot be deleted')
         )
 
     def test_task_filters(self):

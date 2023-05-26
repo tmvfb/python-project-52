@@ -1,0 +1,2 @@
+{% url 'label_update' id=label.id as new_url %}
+{% include "labels/create.html" with url_=new_url button="Update" %}

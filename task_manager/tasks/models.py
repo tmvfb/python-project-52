@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 from django.contrib.auth.models import User
 
 
@@ -25,9 +26,22 @@ class Task(models.Model):
         User, null=True, on_delete=models.PROTECT, related_name='assignee',
         verbose_name=_('Assignee')
     )
+    label = models.ManyToManyField(
+        Label, through='LabelM2m', related_name='label', blank=True,
+        verbose_name=_('Label')
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_('Created at '),
     )
+
+    def __str__(self):
+        return self.name
+
+
+class LabelM2m(models.Model):  # create restrictions for label-task m2m
+
+    label = models.ForeignKey(Label, on_delete=models.PROTECT, null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

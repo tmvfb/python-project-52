@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
-from .models import Status
-from .forms import StatusForm
+from .models import Label
+from .forms import LabelForm
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django.utils.translation import gettext as _
@@ -12,24 +12,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class IndexView(LoginRequiredMixin, ListView):
 
-    model = Status
+    model = Label
     paginate_by = 50
-    template_name = 'statuses/index.html'
+    template_name = 'labels/index.html'
     login_url = reverse_lazy('user_login')
 
     def get_queryset(self):
-        return Status.objects.all().order_by('id')
+        return Label.objects.all().order_by('id')
 
 
-class StatusCreateView(LoginRequiredMixin, CreateView):
+class LabelCreateView(LoginRequiredMixin, CreateView):
 
-    form_class = StatusForm
-    template_name = 'statuses/create.html'
-    success_url = reverse_lazy('statuses')
+    form_class = LabelForm
+    template_name = 'labels/create.html'
+    success_url = reverse_lazy('labels')
     login_url = reverse_lazy('user_login')
 
     def form_valid(self, form):
-        messages.success(self.request, _('Status created successfully!'))
+        messages.success(self.request, _('Label created successfully!'))
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -41,17 +41,17 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class StatusUpdateView(LoginRequiredMixin, UpdateView):
+class LabelUpdateView(LoginRequiredMixin, UpdateView):
 
-    form_class = StatusForm
-    model = Status
-    template_name = 'statuses/update.html'
-    success_url = reverse_lazy('statuses')
+    form_class = LabelForm
+    model = Label
+    template_name = 'labels/update.html'
+    success_url = reverse_lazy('labels')
     login_url = reverse_lazy('user_login')
     pk_url_kwarg = 'id'
 
     def form_valid(self, form):
-        messages.success(self.request, _('Status updated successfully!'))
+        messages.success(self.request, _('Label updated successfully!'))
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -62,22 +62,22 @@ class StatusUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class StatusDeleteView(LoginRequiredMixin, DeleteView):
+class LabelDeleteView(LoginRequiredMixin, DeleteView):
 
-    model = Status
-    success_url = reverse_lazy('statuses')
-    template_name = 'statuses/delete.html'
+    model = Label
+    success_url = reverse_lazy('labels')
+    template_name = 'labels/delete.html'
     login_url = reverse_lazy('user_login')
     pk_url_kwarg = 'id'
 
     def form_valid(self, form):
         try:
-            messages.success(self.request, _('Status deleted successfully!'))
+            messages.success(self.request, _('Label deleted successfully!'))
             return super().form_valid(form)
         except ProtectedError:
             list(messages.get_messages(self.request))  # clear success message
             messages.warning(
                 self.request,
-                _('Status is connected with one or more tasks and cannot be deleted')  # noqa: E501
+                _('Label is connected with one or more tasks and cannot be deleted')  # noqa: E501
             )
-            return redirect('statuses')
+            return redirect('labels')

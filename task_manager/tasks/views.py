@@ -22,6 +22,7 @@ class IndexView(LoginRequiredMixin, ListView):
         filters = {
             'status': self.request.GET.get('status'),
             'executor': self.request.GET.get('executor'),
+            'label': self.request.GET.get('label'),
             'mine': self.request.GET.get('mine')
         }
         tasks = Task.objects.all().order_by('id')

@@ -120,7 +120,7 @@ class UserDeleteView(LoginRequiredMixin, CheckUserMixin, DeleteView):
             return super().form_valid(form)
         except ProtectedError:
             list(messages.get_messages(self.request))  # clear success message
-            messages.warning(self.request, _('User has tasks and can not be deleted'))  # noqa: E501
+            messages.warning(self.request, _('User has tasks and cannot be deleted'))  # noqa: E501
             return redirect('users')
 
 
