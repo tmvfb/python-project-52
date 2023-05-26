@@ -100,10 +100,10 @@ DATABASES = {
 
 if os.getenv('DATABASE_URL'):
     db = dj_database_url.config(
-        default=os.getenv('DATABASE'),
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
-        conn_health_checks=True,
-        test_options={'NAME': BASE_DIR / 'db.sqlite3'}
+        # conn_health_checks=True,
+        # test_options={'NAME': BASE_DIR / 'db.sqlite3'}
     )
 
     DATABASES['default'].update(db)
