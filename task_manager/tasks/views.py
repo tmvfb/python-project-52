@@ -29,7 +29,7 @@ class IndexView(LoginRequiredMixin, ListView):
 
         for var_name, filter in filters.items():  # filtering by several fields
             if var_name == 'mine' and filter:
-                tasks = tasks.filter(executor=self.request.user.id)
+                tasks = tasks.filter(assigned_by=self.request.user.id)
             elif filter:
                 kwargs = {var_name: filter}
                 tasks = tasks.filter(**kwargs)

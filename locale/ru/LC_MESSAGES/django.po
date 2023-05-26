@@ -159,7 +159,7 @@ msgstr "Исполнитель"
 
 #: task_manager/tasks/forms.py:40 task_manager/tasks/models.py:31
 msgid "Label"
-msgstr "Метка"
+msgstr "Метки"
 
 #: task_manager/tasks/forms.py:48
 msgid "Is mine"

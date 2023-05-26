@@ -5,9 +5,29 @@ from django.forms import (
     ModelForm, TextInput, Textarea, Select, CheckboxInput, SelectMultiple
 )
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+
+
+class CustomModelChoiceField(forms.ModelChoiceField):
+    """
+    Extend ModelChoiceField for users so that the choices are
+    listed as 'first_name last_name (username)' instead of just
+    'username'.
+
+    """
+    def label_from_instance(self, obj):
+        return obj.get_full_name()
 
 
 class TaskForm(ModelForm):
+
+    executor = CustomModelChoiceField(
+        queryset=User.objects.all(),
+        label=_('Assignee'),
+        required=False, widget=Select(attrs={
+            'class': 'form-control form-select',
+        })
+    )
 
     class Meta:
         model = Task
@@ -31,10 +51,6 @@ class TaskForm(ModelForm):
                 'class': 'form-control form-select',
                 'placeholder': _('Status'),
             }),
-            'executor': Select(attrs={
-                'class': 'form-control form-select',
-                'placeholder': _('Assignee'),
-            }),
             'label': SelectMultiple(attrs={
                 'class': 'form-control form-select',
                 'placeholder': _('Label'),
@@ -56,6 +72,13 @@ class FilterForm(ModelForm):
             'class': 'form-control form-select',
         })
     )
+    executor = CustomModelChoiceField(
+        queryset=User.objects.all(),
+        label=_('Assignee'),
+        required=False, widget=Select(attrs={
+            'class': 'form-control form-select',
+        })
+    )
 
     class Meta:
         model = Task
@@ -69,10 +92,6 @@ class FilterForm(ModelForm):
             'status': Select(attrs={
                 'class': 'form-control form-select',
                 'placeholder': _('Status'),
-            }),
-            'executor': Select(attrs={
-                'class': 'form-control form-select',
-                'placeholder': _('Assignee'),
             }),
             'mine': CheckboxInput(attrs={
                 'class': 'form-check-input',
