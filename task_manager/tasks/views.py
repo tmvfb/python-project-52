@@ -13,6 +13,10 @@ from django.utils.translation import gettext_lazy as _
 
 class IndexView(LoginRequiredMixin, ListView):
 
+    def __init__(self, *args, **kwargs):
+        self.tasks_ = Task.objects.all()
+        return super().__init__(*args, **kwargs)
+
     model = Task
     paginate_by = 50
     template_name = 'tasks/index.html'
@@ -25,16 +29,18 @@ class IndexView(LoginRequiredMixin, ListView):
             'label': self.request.GET.get('label'),
             'mine': self.request.GET.get('mine')
         }
-        tasks = Task.objects.all().order_by('id')
+        self.tasks_ = self.tasks_.order_by('id')
 
         for var_name, filter in filters.items():  # filtering by several fields
             if var_name == 'mine' and filter:
-                tasks = tasks.filter(assigned_by=self.request.user.id)
+                self.tasks_ = self.tasks_.filter(
+                    assigned_by=self.request.user.id
+                )
             elif filter:
                 kwargs = {var_name: filter}
-                tasks = tasks.filter(**kwargs)
+                self.tasks_ = self.tasks_.filter(**kwargs)
 
-        return tasks
+        return self.tasks_
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +57,9 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         candidate = form.save(commit=False)
-        candidate.assigned_by = User.objects.get(id=self.request.user.id)
+        candidate.assigned_by = User.objects.get(
+            username=self.request.user.username
+        )
         candidate.save()  # set current user as task creator
         messages.success(self.request, _('Task created successfully!'))
         return super().form_valid(form)

@@ -13,7 +13,6 @@ class CustomModelChoiceField(forms.ModelChoiceField):
     Extend ModelChoiceField for users so that the choices are
     listed as 'first_name last_name (username)' instead of just
     'username'.
-
     """
     def label_from_instance(self, obj):
         return obj.get_full_name()
@@ -26,6 +25,15 @@ class TaskForm(ModelForm):
         label=_('Assignee'),
         required=False, widget=Select(attrs={
             'class': 'form-control form-select',
+        })
+    )
+    label = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        label=_('Labels'),
+        required=False, widget=SelectMultiple(attrs={
+            'class': 'form-control form-select',
+            'placeholder': _('Label'),
+            'multiple': True
         })
     )
 
@@ -51,11 +59,6 @@ class TaskForm(ModelForm):
                 'class': 'form-control form-select',
                 'placeholder': _('Status'),
             }),
-            'label': SelectMultiple(attrs={
-                'class': 'form-control form-select',
-                'placeholder': _('Label'),
-                'multiple': True
-            }),
         }
 
 
@@ -67,7 +70,7 @@ class FilterForm(ModelForm):
     # can use ModelMultipleChoiceField as well
     label = forms.ModelChoiceField(
         queryset=Label.objects.all(),
-        label=_('Labels'),
+        label=_('Label'),
         required=False, widget=Select(attrs={
             'class': 'form-control form-select',
         })

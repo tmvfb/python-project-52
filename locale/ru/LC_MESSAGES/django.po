@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 20:55+0300\n"
+"POT-Creation-Date: 2023-05-27 00:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: task_manager/labels/forms.py:14 task_manager/statuses/forms.py:14
-#: task_manager/tasks/forms.py:24
+#: task_manager/tasks/forms.py:50
 msgid "Name"
 msgstr "Имя"
 
@@ -142,35 +142,36 @@ msgstr "Статус успешно удален"
 msgid "Status is connected with one or more tasks and cannot be deleted"
 msgstr "Невозможно удалить статус, потому что он используется"
 
-#: task_manager/tasks/forms.py:28 task_manager/tasks/models.py:15
+#: task_manager/tasks/forms.py:25 task_manager/tasks/forms.py:83
+#: task_manager/tasks/models.py:27 task_manager/templates/tasks/index.html:50
+msgid "Assignee"
+msgstr "Исполнитель"
+
+#: task_manager/tasks/forms.py:32 task_manager/templates/base.html:52
+#: task_manager/templates/labels/index.html:15
+msgid "Labels"
+msgstr "Метки"
+
+#: task_manager/tasks/forms.py:54 task_manager/tasks/models.py:15
 msgid "Description"
 msgstr "Описание"
 
-#: task_manager/tasks/forms.py:32 task_manager/tasks/forms.py:71
+#: task_manager/tasks/forms.py:58 task_manager/tasks/forms.py:100
 #: task_manager/tasks/models.py:19 task_manager/templates/tasks/index.html:48
 #: task_manager/templates/tasks/show.html:34
 msgid "Status"
 msgstr "Статус"
 
-#: task_manager/tasks/forms.py:36 task_manager/tasks/forms.py:75
-#: task_manager/tasks/models.py:27 task_manager/templates/tasks/index.html:50
-msgid "Assignee"
-msgstr "Исполнитель"
-
-#: task_manager/tasks/forms.py:40 task_manager/tasks/models.py:31
+#: task_manager/tasks/forms.py:62 task_manager/tasks/forms.py:76
+#: task_manager/tasks/models.py:31
 msgid "Label"
-msgstr "Метки"
+msgstr "Метка"
 
-#: task_manager/tasks/forms.py:48
+#: task_manager/tasks/forms.py:70
 msgid "Is mine"
 msgstr "Только свои задачи"
 
-#: task_manager/tasks/forms.py:54 task_manager/templates/base.html:52
-#: task_manager/templates/labels/index.html:15
-msgid "Labels"
-msgstr "Метки"
-
-#: task_manager/tasks/forms.py:79
+#: task_manager/tasks/forms.py:104
 msgid "Is my task"
 msgstr "Только свои задачи"
 
