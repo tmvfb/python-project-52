@@ -37,8 +37,8 @@ class UserTest(TestCase):
         response = self.client.get(reverse('users'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '/users/create/')
-        self.assertContains(response, '/users/login/')
-        self.assertNotContains(response, '/users/logout/')
+        self.assertContains(response, 'login/')
+        self.assertNotContains(response, 'logout/')
         self.assertNotContains(response, '/labels/')
 
     # testing user create view
@@ -75,8 +75,8 @@ class UserTest(TestCase):
     def test_users_view_links_logged_in(self):
         response = self.client.post(reverse('user_login'), data=self.login_data, follow=True)
         self.assertNotContains(response, '/users/create/')
-        self.assertNotContains(response, '/users/login/')
-        self.assertContains(response, '/users/logout/')
+        self.assertNotContains(response, 'login/')
+        self.assertContains(response, 'logout/')
         self.assertContains(response, 'Labels')
 
     def test_user_logout(self):
@@ -87,7 +87,7 @@ class UserTest(TestCase):
         response = self.client.post(reverse('user_login'), data=self.login_data, follow=True)
         response = self.client.post(reverse('user_logout'), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '/users/login/')
+        self.assertContains(response, 'login/')
 
     # testing user update view
     def test_user_update_post_not_logged_in(self):
