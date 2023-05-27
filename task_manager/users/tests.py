@@ -61,7 +61,7 @@ class UserTest(TestCase):
                 response,
                 _("Something went wrong. Please check the entered data"),
             )
-            self.assertContains(response, _("Create"))
+            self.assertContains(response, _("Register"))
 
     # testing user login and logout
     def test_user_login_code(self):
@@ -84,7 +84,7 @@ class UserTest(TestCase):
         self.assertNotContains(response, "/users/create/")
         self.assertNotContains(response, "login/")
         self.assertContains(response, "logout/")
-        self.assertContains(response, "Labels")
+        self.assertContains(response, _("Labels"))
 
     def test_user_logout(self):
         response = self.client.post(
@@ -175,7 +175,7 @@ class UserTest(TestCase):
             reverse("user_update", args=[self.id]), data=self.user, follow=True
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "User updated successfully!")
+        self.assertContains(response, _("User updated successfully!"))
         self.assertContains(response, self.user["username"])
 
     def test_user_update_post_incorrect(self):
@@ -187,7 +187,7 @@ class UserTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(
-            response, "Something went wrong. Please check the entered data"
+            response, _("Something went wrong. Please check the entered data")
         )
         self.assertContains(response, _("Update"))
 

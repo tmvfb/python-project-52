@@ -1,11 +1,8 @@
-from django.contrib import messages
-# from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import ProtectedError
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from task_manager.mixins import MessagesDeleteProtectedMixin, MessagesMixin
 
 from .forms import StatusForm
 from .models import Status
@@ -13,70 +10,48 @@ from .models import Status
 
 class IndexView(LoginRequiredMixin, ListView):
     model = Status
-    paginate_by = 50
     template_name = "statuses/index.html"
     login_url = reverse_lazy("user_login")
+    paginate_by = 50
 
     def get_queryset(self):
         return Status.objects.all().order_by("id")
 
 
-class StatusCreateView(LoginRequiredMixin, CreateView):
+class StatusCreateView(MessagesMixin, LoginRequiredMixin, CreateView):
     form_class = StatusForm
     template_name = "statuses/create.html"
+
+    success_message = _("Status created successfully!")
+
     success_url = reverse_lazy("statuses")
     login_url = reverse_lazy("user_login")
 
-    def form_valid(self, form):
-        messages.success(self.request, _("Status created successfully!"))
-        return super().form_valid(form)
 
-    def form_invalid(self, form):
-        # adds bootstrap-js green checkmarks and red warning signs
-        form.fields["name"].widget.attrs["class"] += " is-invalid"
-        messages.warning(
-            self.request,
-            _("Something went wrong. Please check the entered data"),
-        )
-        return super().form_invalid(form)
-
-
-class StatusUpdateView(LoginRequiredMixin, UpdateView):
+class StatusUpdateView(MessagesMixin, LoginRequiredMixin, UpdateView):
+    model = Status
     form_class = StatusForm
-    model = Status
     template_name = "statuses/update.html"
+
+    success_message = _("Status updated successfully!")
+
     success_url = reverse_lazy("statuses")
     login_url = reverse_lazy("user_login")
     pk_url_kwarg = "id"
 
-    def form_valid(self, form):
-        messages.success(self.request, _("Status updated successfully!"))
-        return super().form_valid(form)
 
-    def form_invalid(self, form):
-        form.fields["name"].widget.attrs["class"] += " is-invalid"
-        messages.warning(
-            self.request,
-            _("Something went wrong. Please check the entered data"),
-        )
-        return super().form_invalid(form)
-
-
-class StatusDeleteView(LoginRequiredMixin, DeleteView):
+class StatusDeleteView(
+    MessagesDeleteProtectedMixin,
+    LoginRequiredMixin,
+    DeleteView
+):
     model = Status
-    success_url = reverse_lazy("statuses")
     template_name = "statuses/delete.html"
-    login_url = reverse_lazy("user_login")
-    pk_url_kwarg = "id"
 
-    def form_valid(self, form):
-        try:
-            messages.success(self.request, _("Status deleted successfully!"))
-            return super().form_valid(form)
-        except ProtectedError:
-            list(messages.get_messages(self.request))  # clear success message
-            messages.warning(
-                self.request,
-                _("Status is connected with one or more tasks and cannot be deleted"),  # noqa: E501
-            )
-            return redirect("statuses")
+    success_message = _("Status deleted successfully!")
+    error_message_protected = _("Status is connected with one or more tasks and cannot be deleted")  # noqa: E501
+
+    success_url = reverse_lazy("statuses")
+    login_url = reverse_lazy("user_login")
+    redirect_url = "statuses"
+    pk_url_kwarg = "id"
