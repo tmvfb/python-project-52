@@ -12,5 +12,9 @@ class Label(models.Model):
         auto_now_add=True, verbose_name=_('Created at'),
     )
 
+    class Meta:
+        verbose_name = _('Label')
+        verbose_name_plural = _('Labels')
+
     def __str__(self):
         return self.name

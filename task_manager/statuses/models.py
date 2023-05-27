@@ -12,5 +12,9 @@ class Status(models.Model):
         auto_now_add=True, verbose_name=_('Created at '),
     )
 
+    class Meta:
+        verbose_name = _('Status')
+        verbose_name_plural = _('Statuses')
+
     def __str__(self):
         return self.name

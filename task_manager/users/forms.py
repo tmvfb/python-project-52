@@ -11,7 +11,7 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["first_name"].widget.attrs.update(
-			{"maxlength": "50", "class": "form-control", "placeholder": _("First name")}  # noqa: E501
+            {"maxlength": "50", "class": "form-control", "placeholder": _("First name")}  # noqa: E501
         )
         self.fields["last_name"].widget.attrs.update(
             {"maxlength": "50", "class": "form-control", "placeholder": _("Last name")}  # noqa: E501

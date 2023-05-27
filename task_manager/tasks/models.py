@@ -34,14 +34,15 @@ class Task(models.Model):
         auto_now_add=True, verbose_name=_('Created at '),
     )
 
+    class Meta:
+        verbose_name = _('Task')
+        verbose_name_plural = _('Tasks')
+
     def __str__(self):
         return self.name
 
 
-class LabelM2m(models.Model):  # create restrictions for label-task m2m
-
+class LabelM2m(models.Model):  # noqa DJ08 DJ110 DJ11
+    # create restrictions for label-task m2m
     label = models.ForeignKey(Label, on_delete=models.PROTECT, null=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return self.name
