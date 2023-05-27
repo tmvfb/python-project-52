@@ -1,7 +1,8 @@
 from django.test import TestCase
-from .factories import UserFactory, PASSWORD
-from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+
+from .factories import PASSWORD, UserFactory
 
 
 class UserTest(TestCase):

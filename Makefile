@@ -7,6 +7,9 @@ start:
 selfcheck:
 	poetry check
 
+sort:
+	isort .
+
 test:
 	python3.8 manage.py test
 
@@ -16,9 +19,15 @@ lint:
 activate:
 	poetry shell
 
-check: selfcheck test lint
+check: sort selfcheck test lint
 
 shell:
 	django-admin shell
 
-.PHONY: dev start selfcheck test lint activate check shell
+trans:
+	django-admin makemessages -l ru
+
+compile:
+	django-admin compilemessages
+
+.PHONY: dev start selfcheck test lint activate check shell trans compile sort

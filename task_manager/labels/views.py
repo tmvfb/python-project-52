@@ -1,17 +1,17 @@
-from django.shortcuts import redirect
-from .models import Label
-from .forms import LabelForm
 from django.contrib import messages
-from django.db.models import ProtectedError
-from django.utils.translation import gettext_lazy as _
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
-from django.urls import reverse_lazy
 # from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import ProtectedError
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+
+from .forms import LabelForm
+from .models import Label
 
 
 class IndexView(LoginRequiredMixin, ListView):
-
     model = Label
     paginate_by = 50
     template_name = 'labels/index.html'
@@ -22,7 +22,6 @@ class IndexView(LoginRequiredMixin, ListView):
 
 
 class LabelCreateView(LoginRequiredMixin, CreateView):
-
     form_class = LabelForm
     template_name = 'labels/create.html'
     success_url = reverse_lazy('labels')
@@ -42,7 +41,6 @@ class LabelCreateView(LoginRequiredMixin, CreateView):
 
 
 class LabelUpdateView(LoginRequiredMixin, UpdateView):
-
     form_class = LabelForm
     model = Label
     template_name = 'labels/update.html'
@@ -63,7 +61,6 @@ class LabelUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class LabelDeleteView(LoginRequiredMixin, DeleteView):
-
     model = Label
     success_url = reverse_lazy('labels')
     template_name = 'labels/delete.html'

@@ -1,9 +1,10 @@
-from django.test import TestCase
-from .factories import TaskFactory
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from django.contrib.auth.models import User
+from django.test import TestCase
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from task_manager.statuses.models import Status
+
+from .factories import TaskFactory
 
 
 class TaskTest(TestCase):
