@@ -44,7 +44,7 @@
           <div class="col">
             <h6>{% translate 'Labels:' %}</h6>
             <ul>
-              {% for label in object.label.all %}
+              {% for label in object.labels.all %}
               <li>{{ label.name }}</li>
               {% endfor %}
             </ul>

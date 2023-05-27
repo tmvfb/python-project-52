@@ -26,8 +26,8 @@ class Task(models.Model):
         User, on_delete=models.PROTECT, related_name='assignee',
         verbose_name=_('Assignee'), blank=True, default='', null=True
     )
-    label = models.ManyToManyField(
-        Label, through='LabelM2m', related_name='label', blank=True,
+    labels = models.ManyToManyField(
+        Label, through='LabelM2m', related_name='labels', blank=True,
         verbose_name=_('Label')
     )
     created_at = models.DateTimeField(
