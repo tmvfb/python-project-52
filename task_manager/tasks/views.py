@@ -8,14 +8,11 @@ from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView, DetailView
 )
 from django.urls import reverse_lazy
+from django.contrib.sessions.backends.db import SessionStore
 from django.utils.translation import gettext_lazy as _
 
 
 class IndexView(LoginRequiredMixin, ListView):
-
-    def __init__(self, *args, **kwargs):
-        self.tasks_ = Task.objects.all()
-        return super().__init__(*args, **kwargs)
 
     model = Task
     paginate_by = 50
@@ -23,28 +20,33 @@ class IndexView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('user_login')
 
     def get_queryset(self):
-        filters = {
+        tasks = Task.objects.all().order_by('id')
+        self.filters = {
             'status': self.request.GET.get('status'),
             'executor': self.request.GET.get('executor'),
-            'label': self.request.GET.get('label'),
+            'labels': self.request.GET.get('labels'),
             'mine': self.request.GET.get('mine')
         }
-        self.tasks_ = self.tasks_.order_by('id')
 
-        for var_name, filter in filters.items():  # filtering by several fields
+        # custom filtering by several fields
+        for var_name, filter in self.filters.items():
             if var_name == 'mine' and filter:
-                self.tasks_ = self.tasks_.filter(
+                tasks = tasks.filter(
                     assigned_by=self.request.user.id
                 )
             elif filter:
                 kwargs = {var_name: filter}
-                self.tasks_ = self.tasks_.filter(**kwargs)
+                tasks = tasks.filter(**kwargs)
 
-        return self.tasks_
+        return tasks
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = FilterForm()
+
+        # populate form fields with current selected values
+        for form_field, value in self.filters.items():
+            context['form'].fields[form_field].initial = value
         return context
 
 

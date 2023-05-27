@@ -24,7 +24,7 @@ class Task(models.Model):
     )
     executor = models.ForeignKey(
         User, on_delete=models.PROTECT, related_name='assignee',
-        verbose_name=_('Assignee'), blank=True, default=''
+        verbose_name=_('Assignee'), blank=True, default='', null=True
     )
     label = models.ManyToManyField(
         Label, through='LabelM2m', related_name='label', blank=True,

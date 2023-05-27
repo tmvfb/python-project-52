@@ -21,7 +21,7 @@
     </div>
 
     <div class="row justify-content-left col-auto col-lg-6 card-body bg-white rounded">
-      <form action="/tasks/" method="get" class="needs-validation" novalidate>
+      <form action="{% url 'tasks' %}" method="get" class="needs-validation" novalidate>
         <div class="form-group">
           {% csrf_token %}
           <table class="table table-hover" required>
@@ -58,7 +58,7 @@
         <td class="align-middle wrapped-word"> <a href={% url "task_show" task.id %}>{{ task.name }}</a></td>
             <td class="align-middle wrapped-word">{{ task.status }}</td>
             <td class="align-middle wrapped-word">{{ task.assigned_by }}</td>
-          <td class="align-middle wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td> 
+            <td class="align-middle wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td> 
             <td class="align-middle">{{ task.created_at }}</td>
             <td class="align-middle">
               <form action="{% url 'task_update' id=task.id %}" method="get" rel="nofollow">

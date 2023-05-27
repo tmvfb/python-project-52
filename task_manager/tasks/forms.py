@@ -27,7 +27,7 @@ class TaskForm(ModelForm):
             'class': 'form-control form-select',
         })
     )
-    label = forms.ModelMultipleChoiceField(
+    labels = forms.ModelMultipleChoiceField(
         queryset=Label.objects.all(),
         label=_('Labels'),
         required=False, widget=SelectMultiple(attrs={
@@ -44,7 +44,7 @@ class TaskForm(ModelForm):
             'description',
             'status',
             'executor',
-            'label'
+            'labels'
         ]
         widgets = {
             'name': TextInput(attrs={
@@ -68,7 +68,7 @@ class FilterForm(ModelForm):
 
     # had to rewrite as default doesn't provide empty choice
     # can use ModelMultipleChoiceField as well
-    label = forms.ModelChoiceField(
+    labels = forms.ModelChoiceField(
         queryset=Label.objects.all(),
         label=_('Label'),
         required=False, widget=Select(attrs={
@@ -88,7 +88,7 @@ class FilterForm(ModelForm):
         fields = [
             'status',
             'executor',
-            'label',
+            'labels',
             'mine'
         ]
         widgets = {
