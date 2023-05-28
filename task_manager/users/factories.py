@@ -2,9 +2,11 @@ import factory
 import factory.random
 from django.contrib.auth.models import User
 from factory.django import DjangoModelFactory
+from django.contrib.auth.hashers import make_password
 
 SEED = 4321
 PASSWORD = 'PswrdNmrc1'
+HASHED_PASSWORD = make_password(PASSWORD)
 
 factory.random.reseed_random(SEED)
 
@@ -13,8 +15,7 @@ class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
 
-    # this password definition makes tests slow but is crucial for login testing
-    password = factory.PostGenerationMethodCall('set_password', PASSWORD)
+    password = HASHED_PASSWORD
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
     username = factory.Faker('user_name')

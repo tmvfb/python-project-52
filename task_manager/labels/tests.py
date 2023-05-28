@@ -1,28 +1,27 @@
-from django.test import TestCase
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .factories import LabelFactory
+from django import test
 
 
+@test.modify_settings(MIDDLEWARE={'remove': [
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+]})
 class LabelTest(TestCase):
     def setUp(self):
         self.labels = LabelFactory.create_batch(2)
         self.label = {"name": "sample_text"}
         self.id = self.labels[0].id
-        self.user = {
-            "password1": "PswrdNmrc1",
-            "password2": "PswrdNmrc1",
-            "first_name": "John",
-            "last_name": "Cena",
-            "username": "bingchilling",
-        }
-        self.login_data = {
-            "password": self.user["password1"],
-            "username": self.user["username"],
-        }
-        self.client.post(reverse("user_create"), data=self.user)
-        self.client.post(reverse("user_login"), data=self.login_data)
+
+        self.client = Client()
+        self.user = get_user_model().objects.create_user(
+            username='JohnCena',
+            password='bingchilling'
+        )
+        self.client.force_login(self.user)
 
     # testing labels view
     def test_labels_view(self):

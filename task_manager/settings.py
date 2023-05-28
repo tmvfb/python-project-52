@@ -185,12 +185,3 @@ ROLLBAR = {
     'code_version': '1.0',
     'root': BASE_DIR,
 }
-
-#
-#
-# import django
-# django.setup()
-#
-# from django.utils.translation import activate, get_language
-# activate('ru')
-# LANGUAGE_CODE = get_language()

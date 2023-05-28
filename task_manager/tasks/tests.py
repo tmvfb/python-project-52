@@ -1,47 +1,47 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from task_manager.statuses.models import Status
 
 from .factories import TaskFactory
 
+from django import test
 
+
+@test.modify_settings(MIDDLEWARE={'remove': [
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+]})
 class TaskTest(TestCase):
 
     def setUp(self):
-        self.user = {
-            'password1': 'PswrdNmrc1',
-            'password2': 'PswrdNmrc1',
-            'first_name': 'John',
-            'last_name': 'Cena',
-            'username': 'bingchilling'
-        }
-        self.login_data = {
-            'password': self.user['password1'],
-            'username': self.user['username']
-        }
+        self.client = Client()
+        self.user = get_user_model().objects.create_user(
+            username='JohnCena',
+            password='bingchilling'
+        )
+        self.client.force_login(self.user)
+
         self.status = {'name': 'sample_text'}
-        self.client.post(reverse('user_create'), data=self.user)
-        self.client.post(reverse('user_login'), data=self.login_data)
         self.client.post(reverse('status_create'), data=self.status)
 
         self.tasks = TaskFactory.create_batch(
             2,
             status=Status.objects.get(name=self.status['name']),
-            executor=User.objects.get(username=self.user['username']),
-            assigned_by=User.objects.get(username=self.user['username'])
+            executor=get_user_model().objects.get(id=self.user.id),
+            assigned_by=get_user_model().objects.get(id=self.user.id),
         )
 
         self.task = TaskFactory.create_fake_task(
             status=Status.objects.get(name=self.status['name']).id,
-            executor=User.objects.get(username=self.user['username']).id,
-            assigned_by=User.objects.get(username=self.user['username']).id
+            executor=get_user_model().objects.get(id=self.user.id).id,
+            assigned_by=get_user_model().objects.get(id=self.user.id).id,
         )
         self.incorrect_task = TaskFactory.create_fake_task(
             status=Status.objects.get(name=self.status['name']).id,
             executor=self.tasks[-1].id + 1,
-            assigned_by=User.objects.get(username=self.user['username']).id
+            assigned_by=get_user_model().objects.get(id=self.user.id).id,
         )
         self.id = self.tasks[0].id
 

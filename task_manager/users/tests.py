@@ -3,8 +3,12 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .factories import PASSWORD, UserFactory
+from django import test
 
 
+@test.modify_settings(MIDDLEWARE={'remove': [
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+]})
 class UserTest(TestCase):
     def setUp(self):
         self.users = UserFactory.create_batch(2)
