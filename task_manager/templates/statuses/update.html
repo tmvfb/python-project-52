@@ -1,2 +1,4 @@
+{% load i18n %}
+{% translate "Update" as button %}
 {% url 'status_update' id=status.id as new_url %}
-{% include "statuses/create.html" with url_=new_url button="Update" %}
+{% include "statuses/create.html" with url_=new_url button=button %}

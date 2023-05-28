@@ -31,14 +31,8 @@
             <td class="align-middle wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="align-middle">{{ user.date_joined }}</td>
             <td class="align-middle">
-              <form action="{% url 'user_update' id=user.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
-              </form>
-              <form action="{% url 'user_delete' id=user.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
-              </form>
+              <a href="{% url 'user_update' id=user.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'user_delete' id=user.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
           </tr>
         {% endfor %}

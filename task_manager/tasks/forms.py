@@ -43,7 +43,6 @@ class TaskForm(ModelForm):
         widget=SelectMultiple(
             attrs={
                 "class": "form-control form-select",
-                "placeholder": _("Label"),
                 "multiple": True,
             }
         ),
@@ -68,30 +67,18 @@ class TaskForm(ModelForm):
             "status": Select(
                 attrs={
                     "class": "form-control form-select",
-                    "placeholder": _("Status"),
                 }
             ),
         }
 
 
-class FilterForm(ModelForm):
+class FilterForm(TaskForm):
     mine = forms.BooleanField(label=_("Is mine"))
 
-    # had to rewrite as default doesn't provide empty choice
     # can use ModelMultipleChoiceField as well
     labels = forms.ModelChoiceField(
         queryset=Label.objects.all(),
         label=_("Label"),
-        required=False,
-        widget=Select(
-            attrs={
-                "class": "form-control form-select",
-            }
-        ),
-    )
-    executor = CustomModelChoiceField(
-        queryset=User.objects.all(),
-        label=_("Assignee"),
         required=False,
         widget=Select(
             attrs={
@@ -107,13 +94,11 @@ class FilterForm(ModelForm):
             "status": Select(
                 attrs={
                     "class": "form-control form-select",
-                    "placeholder": _("Status"),
                 }
             ),
             "mine": CheckboxInput(
                 attrs={
                     "class": "form-check-input",
-                    "placeholder": _("Is my task"),
                 }
             ),
         }

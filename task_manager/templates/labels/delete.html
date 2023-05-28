@@ -2,14 +2,14 @@
 {% load i18n %}
 
 {% block main %}
-<div class="container wrapper flex-grow-1">
-  <h1 class="my-4">
-    {% translate 'Delete label' %}
-  </h1>
-  <p>{% translate 'Are you sure you want to delete label' %}<span style="font-weight:bold"> {{ label.name }}</span>?</p>
-  <form action="{% url 'label_delete' id=label.id %}" method="post" rel="nofollow">
-    {% csrf_token %}
-    <input class="btn btn-danger mt-2" type="submit" value="{% translate 'Yes, delete label' %}">
-  </form>
-</div>
+  <div class="container wrapper flex-grow-1">
+    <h1 class="my-4">
+      {% translate 'Delete label' %}
+    </h1>
+    <p>{% translate 'Are you sure you want to delete label' %}<span style="font-weight:bold"> {{ label.name }}</span>?</p>
+    <form action="{% url 'label_delete' id=label.id %}" method="post" rel="nofollow">
+      {% csrf_token %}
+      <input class="btn btn-danger mt-2" type="submit" value="{% translate 'Yes, delete label' %}">
+    </form>
+  </div>
 {% endblock %}

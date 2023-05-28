@@ -2,14 +2,14 @@
 {% load i18n %}
 
 {% block main %}
-<div class="container wrapper flex-grow-1">
-  <h1 class="my-4">
-    {% translate 'Delete user' %}
-  </h1>
-  <p>{% translate 'Are you sure you want to delete user' %}<span style="font-weight:bold"> {{ user.first_name }} {{ user.last_name }}</span>?</p>
-  <form action="{% url 'user_delete' id=user.id %}" method="post" rel="nofollow">
-    {% csrf_token %}
-    <input class="btn btn-danger mt-2" type="submit" value="{% translate 'Yes, delete user' %}">
-  </form>
-</div>
+  <div class="container wrapper flex-grow-1">
+    <h1 class="my-4">
+      {% translate 'Delete user' %}
+    </h1>
+    <p>{% translate 'Are you sure you want to delete user' %}<span style="font-weight:bold"> {{ user.first_name }} {{ user.last_name }}</span>?</p>
+    <form action="{% url 'user_delete' id=user.id %}" method="post" rel="nofollow">
+      {% csrf_token %}
+      <input class="btn btn-danger mt-2" type="submit" value="{% translate 'Yes, delete user' %}">
+    </form>
+  </div>
 {% endblock %}

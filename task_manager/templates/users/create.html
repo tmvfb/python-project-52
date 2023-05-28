@@ -9,12 +9,12 @@
         <div class="{{ w1|default:'col-10' }}">
           {% csrf_token %}
           <table class="table table-hover">
-              {% for field in form %}
-                <tr>
-                  <th>{{ field.label_tag|slice:":-9" }}</th>
-                  <td>{{ field }}</td>
-                </tr>
-              {% endfor %}
+            {% for field in form %}
+              <tr>
+                <th>{{ field.label_tag|slice:":-9" }}</th>
+                <td>{{ field }}</td>
+              </tr>
+            {% endfor %}
           </table>
           <div class="col-12 text-right">
             {% translate "Register" as default_button %}

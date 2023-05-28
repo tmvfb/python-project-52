@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class UserPermissionMixin(UserPassesTestMixin):
     """
     Checks if user tries to update or delete other user's profile or task.
+    Sends a flash if user is not authenticated.
     """
     # error_message_permission = None
     # error_message_login = None
@@ -39,7 +40,7 @@ class UserPermissionMixin(UserPassesTestMixin):
 class MessagesMixin:
     """
     Redefines validation functions to show flash messages.
-    Adds bootstrap-js green checkmarks and red warning signs.
+    Adds bootstrap-js green checkmarks and red warning signs for forms.
     """
     # success_message = None
 

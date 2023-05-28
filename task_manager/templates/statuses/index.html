@@ -32,14 +32,8 @@
             <td class="align-middle wrapped-word">{{ status.name }}</td>
             <td class="align-middle">{{ status.created_at }}</td>
             <td class="align-middle">
-              <form action="{% url 'status_update' id=status.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
-              </form>
-              <form action="{% url 'status_delete' id=status.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
-              </form>
+              <a href="{% url 'status_update' id=status.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'status_delete' id=status.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
           </tr>
         {% endfor %}

@@ -32,14 +32,8 @@
             <td class="align-middle wrapped-word">{{ label.name }}</td>
             <td class="align-middle">{{ label.created_at }}</td>
             <td class="align-middle">
-              <form action="{% url 'label_update' id=label.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
-              </form>
-              <form action="{% url 'label_delete' id=label.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
-              </form>
+              <a href="{% url 'label_update' id=label.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'label_delete' id=label.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
           </tr>
         {% endfor %}

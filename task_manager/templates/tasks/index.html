@@ -61,14 +61,8 @@
             <td class="align-middle wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td> 
             <td class="align-middle">{{ task.created_at }}</td>
             <td class="align-middle">
-              <form action="{% url 'task_update' id=task.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mb-1 btn-block">{% translate 'Update' %}</button>
-              </form>
-              <form action="{% url 'task_delete' id=task.id %}" method="get" rel="nofollow">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-left btn-sm mt-1 btn-block">{% translate 'Delete' %}</button>
-              </form>
+              <a href="{% url 'task_update' id=task.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'task_delete' id=task.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
           </tr>
         {% endfor %}

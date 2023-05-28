@@ -1,2 +1,4 @@
+{% load i18n %}
+{% translate "Update" as button %}
 {% url 'task_update' id=task.id as new_url %}
-{% include "tasks/create.html" with url_=new_url button="Update" %}
+{% include "tasks/create.html" with url_=new_url button=button %}
