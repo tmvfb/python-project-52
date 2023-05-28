@@ -2,6 +2,8 @@
 
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 {% load static %}
 {% load bootstrap4 %}
 {% bootstrap_css %}
@@ -28,13 +30,19 @@
       padding: 3rem 1.5rem;
       text-align: center;
     }
+    .invert-image {
+      filter: invert(100%);
+    }
     </style>
   </head>
 
   <body>
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="{% url 'home' %}">{% translate 'Task manager' %}</a>
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Font_Awesome_5_solid_tasks.svg" alt="Tasks icon" width="22" height="22" class="invert-image mb-1">
+        {% translate 'Task manager' %}
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -62,7 +70,24 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% translate 'Search' %}</button>
         </form>
       {% endif %}
+
         <ul class="navbar-nav mr-0 ml-4">
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% translate 'Language' %}</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <form action="{% url 'set_language' %}" method="post" class="form-inline">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+
+                {% for language in languages %}
+                  <button name="language" value="{{ language.code }}" type="submit" class="mx-auto dropdown-item">{{ language.name_local }} ({{ language.code }})</button>
+                {% endfor %}
+
+              </form>
+            </div>
+          </li>
+
       {% if not request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'user_login' %}">{% translate 'Login' %}</a>
@@ -104,11 +129,15 @@
       </ul>
       {% endif %}
 
-      {% block main%}
+      {% block main %}
 
         <div class="starter-template">
-          <h1>{% translate 'Bootstrap starter template' %}</h1>
-          <p class="lead">{% translate 'Use this document as a way to quickly start any new project.' %}<br> {% translate 'All you get is this text and a mostly barebones HTML document.' %}</p>
+          <h1>{% translate 'Task manager' %}</h1>
+          <p class="lead">
+            {% translate 'A web app to manage your tasks. Supports adding and editing labels and statuses for the task.' %}
+            <br>
+            {% translate 'Please register to get started.' %}
+          </p>
         </div>
 
       {% endblock %}
