@@ -1,9 +1,16 @@
+# starting server
 dev:
 	python3.8 manage.py runserver
 
 start:
 	poetry run gunicorn task_manager.wsgi
 
+# poetry commands for test
+install:
+	poetry build
+	poetry install
+
+# performing checks, formatting and lint
 selfcheck:
 	poetry check
 
@@ -16,11 +23,11 @@ test:
 lint:
 	poetry run flake8 task_manager
 
-activate:
-	poetry shell
-
 check: sort selfcheck test lint
 
+check-ci: selfcheck test lint
+
+# django-admin commands
 shell:
 	django-admin shell
 
@@ -30,4 +37,9 @@ trans:
 compile:
 	django-admin compilemessages
 
-.PHONY: dev start selfcheck test lint activate check shell trans compile sort
+# test coverage reports
+make test-coverage:
+	poetry run coverage run --source='.' manage.py test task_manager
+	poetry run coverage xml
+
+.PHONY: dev start selfcheck test lint check trans compile sort test-coverage install

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import rollbar
 
 import dj_database_url
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +20,7 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_manager.settings')
 
@@ -179,9 +181,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://github.com'
 ]
 
-ROLLBAR = {
-    'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
-    'code_version': '1.0',
-    'root': BASE_DIR,
-}
+if os.getenv('ROLLBAR_ACCESS_TOKEN'):
+    ROLLBAR = {
+        'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
+        'environment': 'development' if DEBUG else 'production',
+        'code_version': '1.0',
+        'root': BASE_DIR,
+    }
+    rollbar.init(**ROLLBAR)
