@@ -40,6 +40,6 @@ compile:
 # test coverage reports
 make test-coverage:
 	poetry run coverage run --source='.' manage.py test task_manager
-	poetry run coverage xml
+	poetry run coverage xml -o coverage.xml
 
 .PHONY: dev start selfcheck test lint check trans compile sort test-coverage install

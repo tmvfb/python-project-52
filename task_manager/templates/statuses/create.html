@@ -12,7 +12,7 @@
             {% for field in form %}
               <tr>
                 <th>{{ field.label_tag|slice:":-9" }}</th>
-                <td>{{ field }}</td>
+                <td>{{ field }} <br> <div class="text-secondary">{{ field.errors}}</div></td>
               </tr>
             {% endfor %}
           </table>

@@ -1,9 +1,9 @@
+from django import test
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .factories import PASSWORD, UserFactory
-from django import test
 
 
 @test.modify_settings(MIDDLEWARE={'remove': [

@@ -1,8 +1,8 @@
 import factory
 import factory.random
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from factory.django import DjangoModelFactory
-from django.contrib.auth.hashers import make_password
 
 SEED = 4321
 PASSWORD = 'PswrdNmrc1'

@@ -1,13 +1,12 @@
-from django.contrib.auth.models import User
+from django import test
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from task_manager.statuses.models import Status
 
 from .factories import TaskFactory
-
-from django import test
 
 
 @test.modify_settings(MIDDLEWARE={'remove': [
@@ -39,8 +38,8 @@ class TaskTest(TestCase):
             assigned_by=get_user_model().objects.get(id=self.user.id).id,
         )
         self.incorrect_task = TaskFactory.create_fake_task(
-            status=Status.objects.get(name=self.status['name']).id,
-            executor=self.tasks[-1].id + 1,
+            status="",
+            executor=get_user_model().objects.get(id=self.user.id).id,
             assigned_by=get_user_model().objects.get(id=self.user.id).id,
         )
         self.id = self.tasks[0].id
@@ -101,13 +100,13 @@ class TaskTest(TestCase):
             reverse('task_create'), data=self.task, follow=True
         )
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, _('exists'))
+        self.assertContains(response, _('exists'))
 
         response = self.client.post(
             reverse('task_create'), data=self.incorrect_task, follow=True
         )
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, _('required'))
+        self.assertContains(response, _('required'))
 
     # testing task update view
     def test_task_update_get_not_logged_in(self):
@@ -151,7 +150,7 @@ class TaskTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, _('exists'))
+        self.assertContains(response, _('exists'))
 
         response = self.client.post(
             reverse('task_update', args=[self.id]),
@@ -159,7 +158,7 @@ class TaskTest(TestCase):
             follow=True
         )
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, _('update'))
+        self.assertContains(response, _('Update'))
 
     # testing task delete view
     def test_task_delete_post_not_logged_in(self):
