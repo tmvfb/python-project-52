@@ -107,9 +107,6 @@ class LabelTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f"/labels/{self.id}/update/")
 
-    def test_label_update_get_in_progress(self):  # TODO
-        assert True
-
     def test_label_update_post_correct_code(self):
         response = self.client.post(
             reverse("label_update", args=[self.id]), data=self.label
@@ -161,9 +158,6 @@ class LabelTest(TestCase):
         self.assertContains(response, _("delete"))
         self.assertContains(response, f"/labels/{self.id}/delete/")
 
-    def test_label_delete_get_in_progress(self):  # TODO
-        assert True
-
     def test_label_delete_post_correct_code(self):
         response = self.client.post(reverse("label_delete", args=[self.id]))
         self.assertEqual(response.status_code, 302)
@@ -175,6 +169,3 @@ class LabelTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Label deleted successfully!"))
         self.assertNotContains(response, self.labels[0].name)
-
-    # test permissions
-    # TODO

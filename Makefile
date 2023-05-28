@@ -25,7 +25,7 @@ lint:
 
 check: sort selfcheck test lint
 
-check-ci: selfcheck test lint
+check-ci: selfcheck lint
 
 # django-admin commands
 shell:

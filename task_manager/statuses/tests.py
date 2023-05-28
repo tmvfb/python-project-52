@@ -107,9 +107,6 @@ class StatusTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f"/statuses/{self.id}/update/")
 
-    def test_status_update_get_in_progress(self):  # TODO
-        assert True
-
     def test_status_update_post_correct_code(self):
         response = self.client.post(
             reverse("status_update", args=[self.id]), data=self.status
@@ -162,9 +159,6 @@ class StatusTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("delete"))
         self.assertContains(response, f"/statuses/{self.id}/delete/")
-
-    def test_status_delete_get_in_progress(self):  # TODO
-        assert True
 
     def test_status_delete_post_correct_code(self):
         response = self.client.post(reverse("status_delete", args=[self.id]))

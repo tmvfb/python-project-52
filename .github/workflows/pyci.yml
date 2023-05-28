@@ -23,7 +23,7 @@ jobs:
         run: |
           pip install poetry
           make install
-      - name: Run linter and tests
+      - name: Run linter and check dependencies
         run: |
           make check-ci
       - name: Test & publish code coverage

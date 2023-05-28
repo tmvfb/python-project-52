@@ -23,7 +23,7 @@ class IndexView(ListView):
         return User.objects.filter(is_superuser=False).order_by("pk")
 
 
-class UserCreateView(MessagesMixin, CreateView):  # TODO
+class UserCreateView(MessagesMixin, CreateView):
     form_class = RegistrationForm
     template_name = "users/create.html"
 
@@ -31,7 +31,7 @@ class UserCreateView(MessagesMixin, CreateView):  # TODO
 
     success_url = reverse_lazy("user_login")
 
-    # def test_func(self):  # authenticated users can't register
+    # def test_func(self):  # authenticated users can't register?
     #     return not self.request.user.is_authenticated
 
 
@@ -82,17 +82,17 @@ class UserDeleteView(
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserLoginView(MessagesMixin, LoginView):  # TODO
+class UserLoginView(MessagesMixin, LoginView):
     template_name = "users/login.html"
     authentication_form = LoginForm
     success_message = _("Logged in successfully!")
 
-    # def test_func(self):  # authenticated users can't login
+    # def test_func(self):  # authenticated users can't login?
     #     return not self.request.user.is_authenticated
 
 
-class UserLogoutView(LogoutView):  # TODO
-    # def test_func(self):  # not authenticated users can't logout
+class UserLogoutView(LogoutView):
+    # def test_func(self):  # not authenticated users can't logout?
     #     return self.request.user.is_authenticated
 
     def dispatch(self, request, *args, **kwargs):

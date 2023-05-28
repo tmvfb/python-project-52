@@ -12,11 +12,20 @@ class TaskFactory(DjangoModelFactory):
     class Meta:
         model = Task
 
-    name = factory.Faker('word')
-    description = factory.Faker('word')
+    name = factory.Faker('name')
+    description = factory.Faker('sentence')
     status = None
     executor = None
     assigned_by = None
+
+    @factory.post_generation  # handlind M2M field
+    def labels(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            # Add labels to the task
+            for label in extracted:
+                self.labels.add(label)
 
     @classmethod
     def create_fake_task(cls, **kwargs):
@@ -24,7 +33,8 @@ class TaskFactory(DjangoModelFactory):
         return {
             'name': user.name,
             'description': user.description,
-            'status': kwargs['status'],
-            'executor': kwargs['executor'],
-            'assigned_by': kwargs['assigned_by'],
+            'status': kwargs.get('status', ""),
+            'executor': kwargs.get('executor', ""),
+            'assigned_by': kwargs.get('assigned_by', ""),
+            'labels': kwargs.get('labels', ""),
         }
