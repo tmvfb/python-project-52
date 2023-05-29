@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main %}
+
+  <style>
+    .wrapped-word {
+      word-wrap: break-word;
+      min-width: 100px;
+      max-width: 130px;
+    }
+  </style>
+
+  <!-- Users -->
+  <div class="mb-5">
+    <h1 class="text-left mb-3">{% translate 'Search results' %}</h1>
+    <button class="btn btn-link text-left btn-sm mb-5 btn-block" type="button" data-toggle="collapse" data-target="#collapseUsers, #collapseStatuses, #collapseLabels, #collapseTasks" aria-expanded="true" aria-controls="collapseUsers collapseStatuses collapseLabels collapseTasks">
+      {% translate 'Expand all' %}
+    </button>
+
+    <h3 class="text-left mb-4">{% translate 'Users' %}</h3>
+    <button class="btn btn-link text-left btn-sm btn-block" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+      {% translate 'Expand' %}
+    </button>
+    <hr class="mx-1">
+    <div class="row justify-content-center collapse" id="collapseUsers">
+      <table class="table table-hover table-borderless mx-1 table-responsive-sm">
+        <thead>
+          <tr>
+            <th>{% translate 'ID' %}</th>
+            <th>{% translate 'Username' %}</th>
+            <th>{% translate 'Full name' %} </th>
+            <th>{% translate 'Creation date' %}</th>
+            <th>{% translate 'Actions' %}</th>
+          </tr>
+        </thead>
+        {% for user in object_list %}
+          <tr>
+            <td class="align-middle">{{ user.id }}</td>
+            <td class="align-middle wrapped-word">{{ user.username}}</td>
+            <td class="align-middle wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="align-middle">{{ user.date_joined }}</td>
+            <td class="align-middle">
+              <a href="{% url 'user_update' id=user.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'user_delete' id=user.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <!-- Statuses -->
+  <div class="mb-5">
+    <h3 class="text-left mb-4">{% translate 'Statuses' %}</h3>
+    <button class="btn btn-link text-left btn-sm btn-block" type="button" data-toggle="collapse" data-target="#collapseStatuses" aria-expanded="true" aria-controls="collapseStatuses">
+      {% translate 'Expand' %}
+    </button>
+    <hr class="mx-1">
+    <div class="row justify-content-center collapse" id="collapseStatuses">
+      <table class="table table-hover table-borderless mx-1 table-responsive-sm">
+        <thead>
+          <tr>
+            <th>{% translate 'ID' %}</th>
+            <th>{% translate 'Status name' %}</th>
+            <th>{% translate 'Creation date' %}</th>
+            <th>{% translate 'Actions' %}</th>
+          </tr>
+        </thead>
+        {% for status in statuses %}
+          <tr>
+            <td class="align-middle">{{ status.id }}</td>
+            <td class="align-middle wrapped-word">{{ status.name }}</td>
+            <td class="align-middle">{{ status.created_at }}</td>
+            <td class="align-middle">
+              <a href="{% url 'status_update' id=status.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'status_delete' id=status.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <!-- Labels -->
+  <div class="mb-3">
+    <h3 class="text-left mb-4">{% translate 'Labels' %}</h3>
+    <button class="btn btn-link text-left btn-sm btn-block" type="button" data-toggle="collapse" data-target="#collapseLabels" aria-expanded="true" aria-controls="collapseLabels">
+      {% translate 'Expand' %}
+    </button>
+    <hr class="mx-1">
+    <div class="row justify-content-center collapse" id="collapseLabels">
+      <table class="table table-hover table-borderless mx-1 table-responsive-sm">
+        <thead>
+          <tr>
+            <th>{% translate 'ID' %}</th>
+            <th>{% translate 'Label name' %}</th>
+            <th>{% translate 'Creation date' %}</th>
+            <th>{% translate 'Actions' %}</th>
+          </tr>
+        </thead>
+        {% for label in labels %}
+          <tr>
+            <td class="align-middle">{{ label.id }}</td>
+            <td class="align-middle wrapped-word">{{ label.name }}</td>
+            <td class="align-middle">{{ label.created_at }}</td>
+            <td class="align-middle">
+              <a href="{% url 'label_update' id=label.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'label_delete' id=label.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="mt-3 pt-4 mb-3">
+    <h3 class="text-left mb-4">{% translate 'Tasks' %}</h3>
+    <button class="btn btn-link text-left btn-sm btn-block" type="button" data-toggle="collapse" data-target="#collapseTasks" aria-expanded="true" aria-controls="collapseTasks">
+      {% translate 'Expand' %}
+    </button>
+    <hr class="mx-1">
+    <div class="row justify-content-center collapse" id="collapseTasks">
+      <table class="table table-hover table-borderless mx-1 table-responsive-md">
+        <thead>
+          <tr>
+            <th>{% translate 'ID' %}</th>
+            <th>{% translate 'Task name' %}</th>
+            <th>{% translate 'Status' %}</th>
+            <th>{% translate 'Creator' %}</th>
+            <th>{% translate 'Assignee' %}</th>
+            <th>{% translate 'Creation date' %}</th>
+            <th>{% translate 'Actions' %}</th>
+          </tr>
+        </thead>
+        {% for task in tasks %}
+          <tr>
+            <td class="align-middle">{{ task.id }}</td>
+        <td class="align-middle wrapped-word"> <a href={% url "task_show" task.id %}>{{ task.name }}</a></td>
+            <td class="align-middle wrapped-word">{{ task.status }}</td>
+            <td class="align-middle wrapped-word">{{ task.assigned_by }}</td>
+            <td class="align-middle wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
+            <td class="align-middle">{{ task.created_at }}</td>
+            <td class="align-middle">
+              <a href="{% url 'task_update' id=task.id %}" class="btn btn-link text-left btn-sm mb-1 btn-block" rel="nofollow">{% translate 'Update' %}</a>
+              <a href="{% url 'task_delete' id=task.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

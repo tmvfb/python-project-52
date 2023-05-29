@@ -14,11 +14,19 @@ from .factories import TaskFactory
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]})
 class TaskTest(TestCase):
+    '''
+    Since all types of model instances are created in this test module,
+    some more features like deletion of connected labels, users and tasks
+    are tested, as well as search option.
+    '''
     def setUp(self):
         # simulate user login
         self.client = Client()
         self.user = get_user_model().objects.create_user(
-            username="JohnCena", password="bingchilling"
+            username="JohnCena",
+            password="bingchilling",
+            first_name="John",
+            last_name="Cena"
         )
         self.client.force_login(self.user)
 
@@ -52,7 +60,7 @@ class TaskTest(TestCase):
             assigned_by=get_user_model().objects.get(id=self.user.id).id,
             labels=list(
                 Label.objects.values_list("id", flat=True)
-            ),  # all lbls
+            ),  # all labels
         )
         # this task has no author and no status
         self.incorrect_task = TaskFactory.create_fake_task(
@@ -270,6 +278,7 @@ class TaskTest(TestCase):
         response = self.client.get(
             reverse("tasks"), {"status": self.status_id}, follow=True
         )
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.task["name"])
         self.assertContains(response, self.tasks[0].name)
         self.assertContains(response, self.tasks[1].name)
@@ -279,6 +288,7 @@ class TaskTest(TestCase):
         response = self.client.get(
             reverse("tasks"), {"executor": self.user_id}, follow=True
         )
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self.task["name"])
         self.assertContains(response, self.tasks[0].name)
         self.assertContains(response, self.tasks[1].name)
@@ -288,6 +298,7 @@ class TaskTest(TestCase):
         response = self.client.get(
             reverse("tasks"), {"labels": self.label_2_id}, follow=True
         )
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self.task["name"])
         self.assertContains(response, self.tasks[0].name)
         self.assertContains(response, self.tasks[1].name)
@@ -297,6 +308,7 @@ class TaskTest(TestCase):
         response = self.client.get(
             reverse("tasks"), {"mine": "on"}, follow=True
         )
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.task["name"])
         self.assertContains(response, self.tasks[0].name)
         self.assertContains(response, self.tasks[1].name)
@@ -310,6 +322,7 @@ class TaskTest(TestCase):
         response = self.client.get(
             reverse("tasks"), {"labels": self.label_2_id}, follow=True
         )
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self.task["name"])
         self.assertContains(response, self.another_task["name"])
         self.assertContains(response, self.tasks[0].name)
@@ -322,3 +335,15 @@ class TaskTest(TestCase):
         self.assertNotContains(response, self.another_task["name"])
         self.assertContains(response, self.tasks[0].name)
         self.assertContains(response, self.tasks[1].name)
+
+    # test search
+    def test_search(self):
+        response = self.client.get(
+            reverse("search"),
+            {"q": self.user.last_name},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.tasks[0].name)
+        self.assertContains(response, self.tasks[1].name)
+        # self.task doesn't have executor 'user' and is not found:
+        self.assertNotContains(response, self.task["name"])

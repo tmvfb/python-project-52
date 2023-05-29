@@ -9,9 +9,6 @@
       min-width: 100px;
       max-width: 130px;
     }
-    .bg-custom {
-      background-color: #faff9;
-    }
   </style>
 
   <div class="ml-1">
@@ -23,7 +20,7 @@
       </div>
     </div>
 
-    <div class="row justify-content-left col-auto col-lg-6 card-body bg-custom rounded">
+    <div class="row justify-content-left col-auto col-lg-6">
       <form action="{% url 'tasks' %}" method="get" class="needs-validation" novalidate>
         <div class="form-group">
           {% csrf_token %}
