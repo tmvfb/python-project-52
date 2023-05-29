@@ -13,12 +13,11 @@ This package is a task management system similar to http://www.redmine.org/. It 
 * Permission system to control user actions on resources deletion
 * Tasks filtering
 * Site search
-* 2 languages support
+* 2 languages support (English, Russian)
 * Implementation of models and relationships using Django ORM
 * Efficient form generation and error handling with Django's built-in form support
-* Test written using Django unittest to ensure code functionality and reliability
+* Tests written using Django unittest to ensure code functionality and reliability
 * Integration of [Rollbar](https://rollbar.com/) for real-time error monitoring
-  
   
 **UI demo:**
   
