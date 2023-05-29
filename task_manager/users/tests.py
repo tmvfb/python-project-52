@@ -28,6 +28,8 @@ class UserTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _("Delete"))
         self.assertContains(response, _("Update"))
+        self.assertContains(response, _("Language"))
+        self.assertContains(response, "English (en)")
         for user in self.users:
             self.assertContains(response, user.first_name)
             self.assertContains(response, user.last_name)
@@ -89,6 +91,8 @@ class UserTest(TestCase):
         self.assertNotContains(response, "login/")
         self.assertContains(response, "logout/")
         self.assertContains(response, _("Labels"))
+        self.assertContains(response, _("Language"))
+        self.assertContains(response, "English (en)")
 
     def test_user_logout(self):
         response = self.client.post(

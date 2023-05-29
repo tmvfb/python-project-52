@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-29 01:29+0300\n"
+"POT-Creation-Date: 2023-05-29 11:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,7 +232,7 @@ msgid "Only the creator of the task can delete it"
 msgstr "Задачу может удалить только ее автор"
 
 #: task_manager/templates/base.html:17 task_manager/templates/base.html:44
-#: task_manager/templates/base.html:135
+#: task_manager/templates/base.html:133
 msgid "Task manager"
 msgstr "Менеджер задач"
 
@@ -249,28 +249,28 @@ msgstr "Поиск"
 msgid "Language"
 msgstr "Выбор языка"
 
-#: task_manager/templates/base.html:93
+#: task_manager/templates/base.html:91
 msgid "Login"
 msgstr "Вход"
 
-#: task_manager/templates/base.html:96
+#: task_manager/templates/base.html:94
 msgid "Sign up"
 msgstr "Регистрация"
 
-#: task_manager/templates/base.html:101
+#: task_manager/templates/base.html:99
 msgid "Logout"
 msgstr "Выход"
 
-#: task_manager/templates/base.html:137
+#: task_manager/templates/base.html:135
 msgid ""
 "A web app to manage your tasks. Supports adding and editing labels and "
 "statuses for the task."
 msgstr ""
 "Веб-приложение для отслеживания задач. Поддерживает добавление и "
-"редактирование меток и статусов для задач."
+"редактирование меток и статусов."
 
-#: task_manager/templates/base.html:139
-msgid "Please register to get started."
+#: task_manager/templates/base.html:137
+msgid "Please sign up or login to get started."
 msgstr "Пожалуйста, зарегистрируйтесь, чтобы начать."
 
 #: task_manager/templates/labels/delete.html:7
@@ -392,7 +392,7 @@ msgid "Full name"
 msgstr "Полное имя"
 
 #: task_manager/templates/users/login.html:3
-msgid "User login"
+msgid "Sign in"
 msgstr "Войти"
 
 #: task_manager/users/forms.py:13
@@ -456,6 +456,9 @@ msgstr "У вас нет прав для изменения другого по�
 #: task_manager/users/views.py:99
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "User login"
+#~ msgstr "Войти"
 
 #~ msgid "Go"
 #~ msgstr "Вперёд"

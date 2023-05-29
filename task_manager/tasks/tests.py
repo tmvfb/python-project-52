@@ -221,6 +221,16 @@ class TaskTest(TestCase):
         self.assertContains(response, _("Task deleted successfully!"))
         self.assertNotContains(response, self.tasks[0].name)
 
+    # testing tasks show view
+    def test_task_show_view(self):
+        response = self.client.get(reverse("task_show", args=[self.task_1_id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.tasks[0].name)
+        self.assertContains(response, self.tasks[0].description)
+        for label in self.tasks[0].labels.all():
+            self.assertContains(response, label)
+        self.assertContains(response, _("Update"))
+
     # testing permissions
     def test_label_delete_connected_with_task(self):
         response = self.client.post(
