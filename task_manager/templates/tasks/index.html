@@ -40,17 +40,17 @@
       </form>
     </div>
 
-    <div class="row justify-content-center mt-5">
-      <table class="table table-hover mx-1 table-responsive-md">
+    <div class="row mt-5 table-responsive-md">
+      <table class="table table-hover mx-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Task name' %}</th>
-            <th>{% translate 'Status' %}</th>
-            <th>{% translate 'Creator' %}</th>
-            <th>{% translate 'Assignee' %}</th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Task name' %}</th>
+            <th class="table-light">{% translate 'Status' %}</th>
+            <th class="table-light">{% translate 'Creator' %}</th>
+            <th class="table-light">{% translate 'Assignee' %}</th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for task in object_list %}

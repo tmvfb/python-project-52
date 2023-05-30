@@ -13,17 +13,17 @@
 
   <div>
     <h1 class="text-left mb-4">{% translate 'Statuses' %}</h1>
-    <div class="row justify-content-center">
+    <div class="row table-responsive-md">
       <div class="col-12 text-left mb-3">
         <a class="btn btn-outline-success btn-sm col-auto text-uppercase" href="{% url 'status_create' %}">{% translate 'Create status' %}</a>
       </div>
-      <table class="table table-hover mx-1 table-responsive-sm">
+      <table class="table table-hover mx-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Status name' %}</th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Status name' %}</th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for status in object_list %}

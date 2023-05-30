@@ -23,15 +23,15 @@
       {% translate 'Expand' %}
     </button>
     <hr class="ms-1">
-    <div class="row justify-content-center collapse" id="collapseUsers">
-      <table class="table table-hover table-borderless ms-3 table-responsive-sm">
+    <div class="row  table-responsive-md collapse" id="collapseUsers">
+      <table class="table table-hover table-borderless ms-3 me-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Username' %}</th>
-            <th>{% translate 'Full name' %} </th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Username' %}</th>
+            <th class="table-light">{% translate 'Full name' %} </th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for user in object_list %}
@@ -57,14 +57,14 @@
       {% translate 'Expand' %}
     </button>
     <hr class="ms-1">
-    <div class="row justify-content-center collapse" id="collapseStatuses">
-      <table class="table table-hover table-borderless ms-3 table-responsive-sm">
+    <div class="row table-responsive-md collapse" id="collapseStatuses">
+      <table class="table table-hover table-borderless ms-3 me-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Status name' %}</th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Status name' %}</th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for status in statuses %}
@@ -89,14 +89,14 @@
       {% translate 'Expand' %}
     </button>
     <hr class="ms-1">
-    <div class="row justify-content-center collapse" id="collapseLabels">
-      <table class="table table-hover table-borderless ms-3 table-responsive-sm">
+    <div class="row table-responsive-md collapse" id="collapseLabels">
+      <table class="table table-hover table-borderless ms-3 me-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Label name' %}</th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Label name' %}</th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for label in labels %}
@@ -121,17 +121,18 @@
       {% translate 'Expand' %}
     </button>
     <hr class="ms-1">
-    <div class="row justify-content-center collapse" id="collapseTasks">
-      <table class="table table-hover table-borderless ms-3 table-responsive-md">
+
+    <div class="row collapse table-responsive-md" id="collapseTasks">
+      <table class="table table-hover table-borderless ms-3 me-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Task name' %}</th>
-            <th>{% translate 'Status' %}</th>
-            <th>{% translate 'Creator' %}</th>
-            <th>{% translate 'Assignee' %}</th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Task name' %}</th>
+            <th class="table-light">{% translate 'Status' %}</th>
+            <th class="table-light">{% translate 'Creator' %}</th>
+            <th class="table-light">{% translate 'Assignee' %}</th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for task in tasks %}

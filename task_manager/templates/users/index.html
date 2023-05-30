@@ -13,15 +13,15 @@
 
   <div>
     <h1 class="text-left mb-4">{% translate 'Users' %}</h1>
-    <div class="row justify-content-center">
-      <table class="table table-hover mx-1 table-responsive-sm">
+    <div class="row table-responsive-md">
+      <table class="table table-hover mx-1">
         <thead>
           <tr>
-            <th>{% translate 'ID' %}</th>
-            <th>{% translate 'Username' %}</th>
-            <th>{% translate 'Full name' %} </th>
-            <th>{% translate 'Creation date' %}</th>
-            <th>{% translate 'Actions' %}</th>
+            <th class="table-light">{% translate 'ID' %}</th>
+            <th class="table-light">{% translate 'Username' %}</th>
+            <th class="table-light">{% translate 'Full name' %} </th>
+            <th class="table-light">{% translate 'Creation date' %}</th>
+            <th class="table-light">{% translate 'Actions' %}</th>
           </tr>
         </thead>
         {% for user in object_list %}
