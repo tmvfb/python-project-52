@@ -11,7 +11,7 @@
           <table class="table table-hover">
             {% for field in form %}
               <tr>
-                <th class="table-light">{{ field.label_tag|slice:":-9" }}</th>
+                <th>{{ field.label_tag|slice:":-9" }}</th>
                 <td>{{ field }} <br> <div class="text-secondary">{{ field.errors}}</div></td>
               </tr>
             {% endfor %}
