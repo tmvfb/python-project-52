@@ -23,6 +23,8 @@ class IndexView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         tasks = Task.objects.all().order_by("id")
+        if 'Reset' in self.request.GET:
+            return tasks
         self.filters = {
             "status": self.request.GET.get("status"),
             "executor": self.request.GET.get("executor"),

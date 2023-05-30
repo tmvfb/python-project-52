@@ -4,10 +4,9 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as languages %}
-{% load static %}
-{% load bootstrap4 %}
-{% bootstrap_css %}
+{% load django_bootstrap5 %}
 {% bootstrap_javascript %}
+{% load static %}
 
 <html lang="{{ language.code }}">
   <head>
@@ -18,15 +17,18 @@
 
     <title>{% translate 'Task manager' %}</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/starter-template/">
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <style>
     body {
       padding-top: 5rem;
+    }
+    .btn-link {
+      text-decoration: none !important
     }
     .starter-template {
       padding: 3rem 1.5rem;
@@ -41,100 +43,82 @@
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Font_Awesome_5_solid_tasks.svg" alt="Tasks icon" width="22" height="22" class="invert-image mb-1">
-        {% translate 'Task manager' %}
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="container-fluid">
+	<a class="navbar-brand" href="{% url 'home' %}">
+	  <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Font_Awesome_5_solid_tasks.svg" alt="Tasks icon" width="22" height="22" class="invert-image mb-1">
+	  {% translate 'Task manager' %}
+	</a>
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	</button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users' %}">{% translate 'Users' %}</a>
-          </li>
-      {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'statuses' %}">{% translate 'Statuses' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'labels' %}">{% translate 'Labels' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'tasks' %}">{% translate 'Tasks' %}</a>
-          </li>
-      {% endif %}
-        </ul>
+	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	  <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'users' %}">{% translate 'Users' %}</a>
+	    </li>
+	    {% if request.user.is_authenticated %}
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'statuses' %}">{% translate 'Statuses' %}</a>
+	    </li>
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'labels' %}">{% translate 'Labels' %}</a>
+	    </li>
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'tasks' %}">{% translate 'Tasks' %}</a>
+	    </li>
+	    {% endif %}
+	  </ul>
 
-        {% if request.user.is_authenticated %}
-          <form action="{% url 'search' %}" method="get" class="form-inline my-2 my-lg-0">
-            <input name="q" class="form-control mr-sm-2" type="text" placeholder="{% translate 'Search' %}" aria-label="Search" value="{{ request.GET.q }}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% translate 'Search' %}</button>
-          </form>
-        {% endif %}
+	  {% if request.user.is_authenticated %}
+	  <form action="{% url 'search' %}" method="get" class="d-flex">
+	    <input name="q" class="form-control me-sm-2" type="text" placeholder="{% translate 'Search' %}" aria-label="Search" value="{{ request.GET.q }}">
+	    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% translate 'Search' %}</button>
+	  </form>
+	  {% endif %}
 
-        <ul class="navbar-nav mr-0 ml-4">
+	  <ul class="navbar-nav mr-0 ms-4">
 
-        <!-- Dropdown menu with languages -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-globe mb-0" viewBox="0 0 16 16">
-                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/>
-              </svg>
-              {% translate 'Language' %}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <form action="{% url 'set_language' %}" method="post" class="form-inline">
-                {% csrf_token %}
-                <input name="next" type="hidden" value="{{ redirect_to }}">
-                {% for language in languages %}
-                  <button name="language" value="{{ language.code }}" type="submit" class="mx-auto dropdown-item">{{ language.name_local }} ({{ language.code }})</button>
-                {% endfor %}
-              </form>
-            </div>
-          </li>
+	    <!-- Dropdown menu with languages -->
+	    <li class="nav-item dropdown">
+	      <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-toggle="dropdown">
+		<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-globe mb-0" viewBox="0 0 16 16">
+		  <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/>
+		</svg>
+		{% translate 'Language' %}
+	      </a>
+	      <div class="dropdown-menu" aria-labelledby="dropdown01">
+		<form action="{% url 'set_language' %}" method="post" class="form-inline">
+		  {% csrf_token %}
+		  <input name="next" type="hidden" value="{{ redirect_to }}">
+		    {% for language in languages %}
+		  <button name="language" value="{{ language.code }}" type="submit" class="mx-auto dropdown-item">{{ language.name_local }} ({{ language.code }})</button>
+		  {% endfor %}
+		</form>
+	      </div>
+	    </li>
 
-      {% if not request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'user_login' %}">{% translate 'Login' %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'user_create' %}">{% translate 'Sign up' %}</a>
-            </li>
-      {% endif %}
-      {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'user_logout' %}">{% translate 'Logout' %}</a>
-            </li>
-      {% endif %}
-        </ul>
+	    {% if not request.user.is_authenticated %}
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'user_login' %}">{% translate 'Login' %}</a>
+	    </li>
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'user_create' %}">{% translate 'Sign up' %}</a>
+	    </li>
+	    {% endif %}
+	    {% if request.user.is_authenticated %}
+	    <li class="nav-item">
+	      <a class="nav-link" href="{% url 'user_logout' %}">{% translate 'Logout' %}</a>
+	    </li>
+	    {% endif %}
+	  </ul>
+	</div>
       </div>
     </nav>
 
-    <main role="main" class="container">
+    <main role="main" class="container mt-3 mb-5">
 
-      {% if messages %}
-      <ul class="messages row justify-content-center col-12">
-        {% for message in messages %}
-          {% if 'warning' in message.tags %}
-            <div class="alert alert-danger alert-dismissible fade show col-12" role="alert">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% elif 'success' in message.tags %}
-            <div class="alert alert-success alert-dismissible fade show col-12" role="alert">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </ul>
-      {% endif %}
+      {% bootstrap_messages %}
 
       {% block main %}
 

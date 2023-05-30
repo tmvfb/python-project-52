@@ -75,7 +75,7 @@ class UserDeleteView(
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.warning(
+            messages.error(
                 request, _("You must login to be able to delete your profile")
             )
             return self.handle_no_permission()
@@ -132,7 +132,7 @@ class UserLogoutView(LogoutView):
 #         messages.success(request, _('User created successfully!'))
 #         return redirect('user_login')
 #
-#     messages.warning(request, _(
+#     messages.error(request, _(
 #         'Something went wrong. Please check the entered data'
 #     ))
 #     return render(
@@ -154,7 +154,7 @@ class UserLogoutView(LogoutView):
 #
 #     def dispatch(self, request, *args, **kwargs):
 #         if not request.user.is_authenticated:
-#             messages.warning(request, _(
+#             messages.error(request, _(
 #                 'You must login to be able to update your profile'
 #             ))
 #             return self.handle_no_permission()
@@ -178,7 +178,7 @@ class UserLogoutView(LogoutView):
 #         messages.success(request, _('User updated successfully!'))
 #         return redirect('users')
 #
-#     messages.warning(request, _(
+#     messages.error(request, _(
 #         'Something went wrong. Please check the entered data'
 #     ))
 #     return render(
@@ -199,7 +199,7 @@ class UserLogoutView(LogoutView):
 #
 #     def dispatch(self, request, *args, **kwargs):
 #         if not request.user.is_authenticated:
-#             messages.warning(request, _(
+#             messages.error(request, _(
 #                 'You must login to be able to delete your profile'
 #             ))
 #             return self.handle_no_permission()
@@ -210,7 +210,7 @@ class UserLogoutView(LogoutView):
 #     if user == request.user:
 #         return super().get(request, *args, **kwargs)
 #     else:
-#         messages.warning(request, _(
+#         messages.error(request, _(
 #             'Sorry, you don't have permissions to delete other users' data'  # noqa: E501
 #         ))
 #         return redirect('users')
@@ -221,7 +221,7 @@ class UserLogoutView(LogoutView):
 #         user.delete()
 #         messages.success(request, _('User deleted successfully'))
 #     else:
-#         messages.warning(request, _('How did you get here?'))
+#         messages.error(request, _('How did you get here?'))
 #     return redirect('users')
 
 
@@ -244,5 +244,5 @@ class UserLogoutView(LogoutView):
 #         messages.success(request, _('User logged in successfully!'))
 #         return redirect('users')
 #     else:
-#         messages.warning(request, _('Login data is incorrect'))
+#         messages.error(request, _('Login data is incorrect'))
 #         return redirect('users')

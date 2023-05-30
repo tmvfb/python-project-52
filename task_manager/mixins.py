@@ -15,7 +15,7 @@ class UserPermissionMixin(UserPassesTestMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.warning(
+            messages.error(
                 request, _(self.error_message_login)
             )
             return self.handle_no_permission()
@@ -32,7 +32,7 @@ class UserPermissionMixin(UserPassesTestMixin):
 
         current_user_id = self.request.user.id
         if current_user_id != user_id:
-            messages.warning(self.request, _(self.error_message_permission))
+            messages.error(self.request, _(self.error_message_permission))
             return False
         return True
 
@@ -56,7 +56,7 @@ class MessagesMixin:
                 form.fields[field.name].widget.attrs["class"] += " is-invalid"
             else:
                 form.fields[field.name].widget.attrs["class"] += " is-valid"
-        messages.warning(
+        messages.error(
             self.request,
             _("Something went wrong. Please check the entered data"),
         )
@@ -79,7 +79,7 @@ class MessagesDeleteProtectedMixin:
             return super().form_valid(form)
         except ProtectedError:
             list(messages.get_messages(self.request))  # clear success message
-            messages.warning(
+            messages.error(
                 self.request, _(self.error_message_protected),
             )
             return redirect(self.redirect_url)

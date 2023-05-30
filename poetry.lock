@@ -298,6 +298,21 @@ beautifulsoup4 = ">=4.8.0"
 Django = ">=3.2"
 
 [[package]]
+name = "django-bootstrap5"
+version = "23.1"
+description = "Bootstrap 5 for Django"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django-bootstrap5-23.1.tar.gz", hash = "sha256:3a3748b1ce1a2a73c2eca851c2926e7b6e5a317815e4da7ced6b1807c4792b1a"},
+    {file = "django_bootstrap5-23.1-py3-none-any.whl", hash = "sha256:d0b1997528b8a557968cf1ac7ff4c68659897779011a5a42816fb1ad9e57d6ae"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "factory-boy"
 version = "3.2.1"
 description = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
@@ -822,4 +837,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "4fda109a27d958e40698e1e36ee9e437618411bb2fe45d955ca8546a9bca396e"
+content-hash = "0b01a4c3b6c86135ce1a97d74b382453731baa97b3e60f447b5d2adad5ae291c"
