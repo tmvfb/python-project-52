@@ -13,15 +13,18 @@ This package is a task management system similar to http://www.redmine.org/. It 
 * Permission system to control user actions on resources deletion
 * Tasks filtering
 * Site search
+* Light/dark mode implemetation with Bootstrap 5.3.0
 * 2 languages support (English, Russian)
 * Implementation of models and relationships using Django ORM
 * Efficient form generation and error handling with Django's built-in form support
 * Tests written using Django unittest to ensure code functionality and reliability
 * Integration of [Rollbar](https://rollbar.com/) for real-time error monitoring
   
-**UI demo:**
+**UI demo (dark/light themes):**
   
-![image](https://github.com/tmvfb/python-project-52/assets/116455436/fbb117e8-225a-4013-b9cf-f7449eacf14f)
+![image](https://github.com/tmvfb/python-project-52/assets/116455436/39e172e1-b535-4472-bf1f-6c42488d6b2a)
+![image](https://github.com/tmvfb/python-project-52/assets/116455436/39e4837c-6313-400b-9dd8-1bd799360bf9)
+
 
 ## Prerequisites
 * Python >=3.8.1
@@ -46,3 +49,6 @@ DJANGO_SETTINGS_MODULE=         (optional)
 DEBUG=                          (optional, default False) 
 ROLLBAR_ACCESS_TOKEN=           (optional) 
 ```
+## Notes on design flaws
+* Using `django.contrib.auth.models` User model as a default is a bad idea for many reasons. A better solution for the future projects is to define a custom model that inherits from AbstractUser.
+* Having opportunity to update both the user info and the password at the same page is a very bad idea. In this project this is done to pass a bunch of tests and for simplicity. Real-life projects should have one form for updating the user data and another one for updating the password.
