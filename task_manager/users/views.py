@@ -11,7 +11,7 @@ from task_manager.mixins import (
     UserPermissionMixin,
 )
 
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, UpdateForm
 
 
 class IndexView(ListView):
@@ -42,7 +42,7 @@ class UserUpdateView(
     UpdateView
 ):
     model = User
-    form_class = RegistrationForm
+    form_class = UpdateForm
     template_name = "users/update.html"
 
     error_message_permission = _("Sorry, you don't have permissions to update other users' data")  # noqa: E501

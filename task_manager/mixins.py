@@ -31,7 +31,7 @@ class UserPermissionMixin(UserPassesTestMixin):
             user_id = self.get_object().assigned_by.id  # get task creator id
 
         current_user = self.request.user
-        if (current_user.id != user_id) and not current_user.is_superuser():
+        if (current_user.id != user_id) and not current_user.is_superuser:
             messages.error(self.request, _(self.error_message_permission))
             return False
         return True

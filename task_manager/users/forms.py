@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 
@@ -46,6 +47,18 @@ class RegistrationForm(UserCreationForm):
             "password1",
             "password2",
         ]
+
+
+class UpdateForm(RegistrationForm):
+    def clean_username(self):  # allow username to be left unchanged
+        username = self.cleaned_data['username']
+        user_id = self.instance.id if self.instance else None
+        existing_user = User.objects.filter(
+            username=username
+        ).exclude(id=user_id).first()
+        if existing_user:
+            raise ValidationError("A user with that username already exists.")
+        return username
 
 
 class LoginForm(AuthenticationForm):
