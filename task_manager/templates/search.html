@@ -23,8 +23,8 @@
       {% translate 'Expand' %}
     </button>
     <hr class="ms-1">
-    <div class="row  table-responsive-md collapse" id="collapseUsers">
-      <table class="table table-hover table-borderless ms-3 me-1">
+    <div class="row table-responsive-md collapse" id="collapseUsers">
+      <table class="table table-hover table-borderless ms-3 me-1 align-middle">
         <thead>
           <tr>
             <th class="table-light">{% translate 'ID' %}</th>
@@ -36,11 +36,11 @@
         </thead>
         {% for user in object_list %}
           <tr>
-            <td class="align-middle">{{ user.id }}</td>
-            <td class="align-middle wrapped-word">{{ user.username}}</td>
-            <td class="align-middle wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
-            <td class="align-middle">{{ user.date_joined }}</td>
-            <td class="align-middle">
+            <td>{{ user.id }}</td>
+            <td class="wrapped-word">{{ user.username}}</td>
+            <td class="wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.date_joined }}</td>
+            <td>
               <a href="{% url 'user_update' id=user.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Update' %}</a>
               <a href="{% url 'user_delete' id=user.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
@@ -58,7 +58,7 @@
     </button>
     <hr class="ms-1">
     <div class="row table-responsive-md collapse" id="collapseStatuses">
-      <table class="table table-hover table-borderless ms-3 me-1">
+      <table class="table table-hover table-borderless ms-3 me-1 align-middle">
         <thead>
           <tr>
             <th class="table-light">{% translate 'ID' %}</th>
@@ -69,10 +69,10 @@
         </thead>
         {% for status in statuses %}
           <tr>
-            <td class="align-middle">{{ status.id }}</td>
-            <td class="align-middle wrapped-word">{{ status.name }}</td>
-            <td class="align-middle">{{ status.created_at }}</td>
-            <td class="align-middle">
+            <td>{{ status.id }}</td>
+            <td class="wrapped-word">{{ status.name }}</td>
+            <td>{{ status.created_at }}</td>
+            <td>
               <a href="{% url 'status_update' id=status.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Update' %}</a>
               <a href="{% url 'status_delete' id=status.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
@@ -90,7 +90,7 @@
     </button>
     <hr class="ms-1">
     <div class="row table-responsive-md collapse" id="collapseLabels">
-      <table class="table table-hover table-borderless ms-3 me-1">
+      <table class="table table-hover table-borderless ms-3 me-1 align-middle">
         <thead>
           <tr>
             <th class="table-light">{% translate 'ID' %}</th>
@@ -101,10 +101,10 @@
         </thead>
         {% for label in labels %}
           <tr>
-            <td class="align-middle">{{ label.id }}</td>
-            <td class="align-middle wrapped-word">{{ label.name }}</td>
-            <td class="align-middle">{{ label.created_at }}</td>
-            <td class="align-middle">
+            <td>{{ label.id }}</td>
+            <td class="wrapped-word">{{ label.name }}</td>
+            <td>{{ label.created_at }}</td>
+            <td>
               <a href="{% url 'label_update' id=label.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Update' %}</a>
               <a href="{% url 'label_delete' id=label.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>
@@ -123,7 +123,7 @@
     <hr class="ms-1">
 
     <div class="row collapse table-responsive-md" id="collapseTasks">
-      <table class="table table-hover table-borderless ms-3 me-1">
+      <table class="table table-hover table-borderless ms-3 me-1 align-middle">
         <thead>
           <tr>
             <th class="table-light">{% translate 'ID' %}</th>
@@ -137,13 +137,13 @@
         </thead>
         {% for task in tasks %}
           <tr>
-            <td class="align-middle">{{ task.id }}</td>
-        <td class="align-middle wrapped-word"> <a href={% url "task_show" task.id %}>{{ task.name }}</a></td>
-            <td class="align-middle wrapped-word">{{ task.status }}</td>
-            <td class="align-middle wrapped-word">{{ task.assigned_by }}</td>
-            <td class="align-middle wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
-            <td class="align-middle">{{ task.created_at }}</td>
-            <td class="align-middle">
+            <td>{{ task.id }}</td>
+            <td class="wrapped-word"> <a href={% url "task_show" task.id %}>{{ task.name }}</a></td>
+            <td class="wrapped-word">{{ task.status }}</td>
+            <td class="wrapped-word">{{ task.assigned_by }}</td>
+            <td class="wrapped-word">{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
+            <td>{{ task.created_at }}</td>
+            <td>
               <a href="{% url 'task_update' id=task.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Update' %}</a>
               <a href="{% url 'task_delete' id=task.id %}" class="btn btn-link text-left btn-sm mt-1 btn-block" rel="nofollow">{% translate 'Delete' %}</a>
             </td>

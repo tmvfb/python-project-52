@@ -1,9 +1,19 @@
-$("input[id='lightSwitch']").on("change", function() {
-  if ($("html").attr("data-bs-theme") === "light") {
-    $("html").attr("data-bs-theme", "dark");
-  } else if ($("html").attr("data-bs-theme") === "dark") {
-    $("html").attr("data-bs-theme", "light");
-  } else {
-    $("html").attr("data-bs-theme", "light");
-  }
+document.addEventListener("DOMContentLoaded", function() {
+  var htmlElement = document.getElementsByTagName("html")[0];
+  var currentTheme = localStorage.getItem("theme");
+  var themeButton = document.getElementById("themeButton")
+
+  if (!currentTheme) {
+    currentTheme = "light";
+  }
+
+  themeButton.checked = currentTheme === "dark";
+
+  function toggleTheme() {
+    var newTheme = htmlElement.getAttribute("data-bs-theme") === "light" ? "dark" : "light";
+    htmlElement.setAttribute("data-bs-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  }
+
+  themeButton.addEventListener("click", toggleTheme);
 });

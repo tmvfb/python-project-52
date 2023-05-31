@@ -14,7 +14,7 @@
   <div>
     <h1 class="text-left mb-4">{% translate 'Users' %}</h1>
     <div class="row table-responsive-md">
-      <table class="table table-hover mx-1">
+      <table class="table table-hover mx-1 align-middle">
         <thead>
           <tr>
             <th class="table-light">{% translate 'ID' %}</th>
@@ -26,11 +26,11 @@
         </thead>
         {% for user in object_list %}
           <tr>
-            <td class="align-middle">{{ user.id }}</td>
-            <td class="align-middle wrapped-word">{{ user.username}}</td>
-            <td class="align-middle wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
-            <td class="align-middle">{{ user.date_joined }}</td>
-            <td class="align-middle">
+            <td>{{ user.id }}</td>
+            <td class="wrapped-word">{{ user.username}}</td>
+            <td class="wrapped-word">{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.date_joined }}</td>
+            <td>
               <a href="{% url 'user_update' id=user.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Update' %}</a>
               <a href="{% url 'user_delete' id=user.id %}" class="btn btn-link d-flex btn-sm mb-1" rel="nofollow">{% translate 'Delete' %}</a>
             </td>

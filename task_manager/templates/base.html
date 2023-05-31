@@ -8,12 +8,27 @@
 {% bootstrap_javascript %}
 {% load static %}
 
-<html lang="{{ language.code }}" data-bs-theme="dark">
+<html lang="{{ language.code }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="keywords" content="task, manager">
-    <meta name="description" content="Gotta hire a SEO specialist for that">
+    <meta name="description" content="Web app to manage your tasks">
+
+    <!-- Theme toggler logic -->
+    <script>
+      var htmlElement = document.getElementsByTagName("html")[0];
+      var currentTheme = localStorage.getItem("theme");
+      var themeButton = document.getElementById("themeButton")
+
+      if (!currentTheme) {
+	currentTheme = "light";
+      }
+
+      htmlElement.setAttribute("data-bs-theme", currentTheme);
+      themeButton.checked = currentTheme === "dark";
+    </script>
+    <script type="module" src="{% static 'theme_toggle.js' %}"></script>
 
     <title>{% translate 'Task manager' %}</title>
 
@@ -23,64 +38,7 @@
     <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
-      [data-bs-theme=light] body {
-	padding-top: 5rem;
-	background: radial-gradient(circle, hsla(0, 0%, 100%, 1) 67%, hsla(0, 0%, 97%, 1) 100%);
-	font-family: 'Raleway', sans-serif;
-      }
-      [data-bs-theme=dark] body {
-	padding-top: 5rem;
-	color: var(--bs-secondary-text-emphasis);
-	background-color: var(--bs-secondary-bg-subtle);
-	font-family: 'Raleway', sans-serif;
-      }
-      [data-bs-theme=dark] .table-light {
-	background-color: var(--bs-light-bg-subtle);
-	color: var(--bs-light-subtle);
-      }
-      [data-bs-theme=dark] .card-header {
-	background-color: var(--bs-light-bg-subtle) !important;
-	text-color: #4287f5;
-      }
-      [data-bs-theme=dark] .card-body {
-	background-color: var(--bs-dark-bg-subtle) !important;
-      }
-      [data-bs-theme=dark] .btn-outline-success {
-	--bs-btn-border-color: #6c757d;
-	--bs-btn-color: #8bb9fe;
-	--bs-btn-hover-bg: #8bb9fe;
-      }
-      [data-bs-theme=dark] .btn-success {
-	--bs-btn-border-color: #6c757d;
-	--bs-btn-color: var(--bs-light-bg-subtle);
-	--bs-btn-bg: #8bb9fe;
-	--bs-btn-hover-bg: #8bb9fe;
-      }
-      .btn-link {
-	text-decoration: none !important;
-      }
-      .starter-template {
-	padding: 3rem 1.5rem;
-	text-align: center;
-      }
-      .invert-image {
-	filter: invert(100%);
-      }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      $("input[id='lightSwitch']").on("change", function() {
-	if ($("html").attr("data-bs-theme") === "light") {
-	  $("html").attr("data-bs-theme", "dark");
-	} else if ($("html").attr("data-bs-theme") === "dark") {
-	  $("html").attr("data-bs-theme", "light");
-	} else {
-	  $("html").attr("data-bs-theme", "light");
-	}
-      });
-    </script>
+    <link href="{% static "styles.css" %}" rel="stylesheet">
   </head>
 
   <body>
@@ -114,7 +72,7 @@
 	  </ul>
 
 	  {% if request.user.is_authenticated %}
-	  <form action="{% url 'search' %}" method="get" class="d-flex">
+	  <form action="{% url 'search' %}" method="get" class="d-flex ms-2">
 	    <input name="q" class="form-control me-sm-2" type="text" placeholder="{% translate 'Search' %}" aria-label="Search" value="{{ request.GET.q }}">
 	    <button class="btn btn-outline-success ms-1" type="submit">{% translate 'Search' %}</button>
 	  </form>
@@ -125,9 +83,6 @@
 	    <!-- Dropdown menu with languages -->
 	    <li class="nav-item dropdown">
 	      <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-toggle="dropdown">
-		<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-globe mb-0" viewBox="0 0 16 16">
-		  <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/>
-		</svg>
 		{% translate 'Language' %}
 	      </a>
 	      <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -154,6 +109,17 @@
 	      <a class="nav-link" href="{% url 'user_logout' %}">{% translate 'Logout' %}</a>
 	    </li>
 	    {% endif %}
+
+	    <!-- Dark/light theme toggler -->
+	    <li class="nav-item mt-2 ms-1">
+	      <div class="form-check form-switch ">
+		<input class="form-check-input" type="checkbox" id="themeButton"</input>
+		<label class="form-check-label" for="themeButton">
+		  <svg enable-background="new 0 0 30 30" height="22px" id="square_icons" version="1.1" viewBox="0 0 30 30" width="22px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="invert-image"><path clip-rule="evenodd" d="M15,0.1C6.8,0.1,0.1,6.8,0.1,15c0,8.2,6.7,14.9,14.9,14.9  S29.9,23.2,29.9,15C29.9,6.8,23.2,0.1,15,0.1z M15,26.9C8.4,26.9,3.1,21.6,3.1,15C3.1,8.4,8.4,3.1,15,3.1c6.6,0,11.9,5.3,11.9,11.9  C26.9,21.6,21.6,26.9,15,26.9z M16,6.1c0,9.5,0,8.6,0,17.9c3.2,0,8-4,8-8.9C23.9,10.1,19.9,6.1,16,6.1z" fill="#211A16" fill-rule="evenodd"/></svg>
+		</label>
+	      </div>
+	    </li>
+
 	  </ul>
 	</div>
       </div>
@@ -164,15 +130,6 @@
       {% bootstrap_messages %}
 
       {% block main %}
-      <div class="form-check form-switch ms-auto mt-4 me-2">
-	<label class="form-check-label" for="lightSwitch">
-	  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
-	    <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
-	  </svg>
-	</label>
-	<input class="form-check-input" type="checkbox" id="lightSwitch"</input>
-      </div>
-
         <div class="starter-template card-body  bg-light card p-5">
           <h1>{% translate 'Task manager' %}</h1>
           <p class="lead mt-2">
@@ -181,11 +138,9 @@
             {% translate 'Please sign up or login to get started.' %}
           </p>
         </div>
-
       {% endblock %}
+
     </main>
 
   </body>
 </html>
-
-
