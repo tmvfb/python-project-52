@@ -13,20 +13,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="keywords" content="task, manager">
-    <meta name="description" content="Web app to manage your tasks">
+    <meta name="description" content={% translate "Web app to manage your tasks" %}>
 
     <!-- Theme toggler logic -->
     <script>
       var htmlElement = document.getElementsByTagName("html")[0];
       var currentTheme = localStorage.getItem("theme");
-      var themeButton = document.getElementById("themeButton")
 
       if (!currentTheme) {
 	currentTheme = "light";
       }
 
       htmlElement.setAttribute("data-bs-theme", currentTheme);
-      themeButton.checked = currentTheme === "dark";
     </script>
     <script type="module" src="{% static 'theme_toggle.js' %}"></script>
 
@@ -72,7 +70,7 @@
 	  </ul>
 
 	  {% if request.user.is_authenticated %}
-	  <form action="{% url 'search' %}" method="get" class="d-flex ms-2">
+	  <form action="{% url 'search' %}" method="get" class="d-flex ms-lg-2 my-1">
 	    <input name="q" class="form-control me-sm-2" type="text" placeholder="{% translate 'Search' %}" aria-label="Search" value="{{ request.GET.q }}">
 	    <button class="btn btn-outline-success ms-1" type="submit">{% translate 'Search' %}</button>
 	  </form>
@@ -115,7 +113,7 @@
 	      <div class="form-check form-switch ">
 		<input class="form-check-input" type="checkbox" id="themeButton"</input>
 		<label class="form-check-label" for="themeButton">
-		  <svg enable-background="new 0 0 30 30" height="22px" id="square_icons" version="1.1" viewBox="0 0 30 30" width="22px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="invert-image"><path clip-rule="evenodd" d="M15,0.1C6.8,0.1,0.1,6.8,0.1,15c0,8.2,6.7,14.9,14.9,14.9  S29.9,23.2,29.9,15C29.9,6.8,23.2,0.1,15,0.1z M15,26.9C8.4,26.9,3.1,21.6,3.1,15C3.1,8.4,8.4,3.1,15,3.1c6.6,0,11.9,5.3,11.9,11.9  C26.9,21.6,21.6,26.9,15,26.9z M16,6.1c0,9.5,0,8.6,0,17.9c3.2,0,8-4,8-8.9C23.9,10.1,19.9,6.1,16,6.1z" fill="#211A16" fill-rule="evenodd"/></svg>
+		  <svg transform="rotate(180)" enable-background="new 0 0 30 30" height="22px" id="square_icons" version="1.1" viewBox="0 0 30 30" width="22px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="invert-image"><path clip-rule="evenodd" d="M15,0.1C6.8,0.1,0.1,6.8,0.1,15c0,8.2,6.7,14.9,14.9,14.9  S29.9,23.2,29.9,15C29.9,6.8,23.2,0.1,15,0.1z M15,26.9C8.4,26.9,3.1,21.6,3.1,15C3.1,8.4,8.4,3.1,15,3.1c6.6,0,11.9,5.3,11.9,11.9  C26.9,21.6,21.6,26.9,15,26.9z M16,6.1c0,9.5,0,8.6,0,17.9c3.2,0,8-4,8-8.9C23.9,10.1,19.9,6.1,16,6.1z" fill="#211A16" fill-rule="evenodd"/></svg>
 		</label>
 	      </div>
 	    </li>
@@ -135,7 +133,9 @@
           <p class="lead mt-2">
             {% translate 'A web app to manage your tasks. Supports adding and editing labels and statuses for the task.' %}
             <br>
-            {% translate 'Please sign up or login to get started.' %}
+	    {% if not request.user.is_authenticated %}
+	      {% translate 'Please sign up or login to get started.' %}
+	    {% endif %}
           </p>
         </div>
       {% endblock %}
