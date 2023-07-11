@@ -39,6 +39,7 @@ $ cd python-project-52.git
 $ make install
 ```
 Then configure environment variables below.  
+Apply migrations via `python3 manage.py migrate`.
 Run `make dev` to start server.
 
 ## Environment variables
